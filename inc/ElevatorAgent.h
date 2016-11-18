@@ -17,7 +17,6 @@ class ElevatorAgent : public Agent
 public:
 	ElevatorAgent(const Config& _config, const PubSubHub* _hub);
 	~ElevatorAgent();
-	virtual void Recieve(const Event& _event);
 	
 protected:
 	virtual string GetLocation() const;

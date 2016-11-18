@@ -8,17 +8,16 @@ class AgentCreator;
 class AgentFactory
 {
 public:
-	AgentFactory();
-	~AgentFactory(){};
-	static AgentFactory& GetInstance() { static AgentFactory agentFactory; return agentFactory; }	
-	Agent* CreateAgent(cost Config& _conf, const PubSubHub* _hub) const;	
-	void AddCreator(const string& _name, const AgentCreator& _creator);
+	~AgentFactory();
+	static AgentFactory& GetInstance();
+	Agent* CreateAgent(const Config& _conf, const PubSubHub* _hub) const;	
+	void AddCreator(const string& _name, const AgentCreator* _creator);
 
 private:
-	AgentFactory(){};
+	AgentFactory();
 	AgentFactory(const AgentFactory& _fact);
 	void operator=(const AgentFactory& _fact);
-
+	
 	map<string, AgentCreator*> m_creators;
 };
 

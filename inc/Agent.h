@@ -21,6 +21,7 @@ class Agent
 public:
 	Agent(const Config& _config, const PubSubHub* _hub);
 	virtual ~Agent() = 0;
+	void SubscribeToHub();
 	
 protected:
 	const Event* GetEvent();

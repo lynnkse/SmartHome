@@ -1,0 +1,5 @@
+Makefile~
+src/AgentFactory.cpp~
+inc/AgentCreator.h~ inc/AgentFactory.h~
+inc/*~
+*.o

@@ -11,6 +11,8 @@ Agent::Agent(const Config& _config, const PubSubHub* _hub) : m_type(_config.GetT
 	else
 		m_hub = (PubSubHub*) _hub;
 
+	//_hub->Subscribe(this);
+
 	m_deque = new SafeDeque<Event*>();
 }
 
@@ -51,7 +53,10 @@ void Agent::SendEventToHub(const Event* _event)
 	m_hub->Recieve(_event);
 }
 
-
+void Agent::SubscribeToHub()
+{
+	m_hub->Subscribe(this);
+}
 
 
 

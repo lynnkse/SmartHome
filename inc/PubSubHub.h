@@ -14,8 +14,8 @@ private:
 	class Subscribers
 	{
 	public:
-		void InsertAgent(const Agent* _agent);
-		const vector<Agent*>& GetRelevantAgents(const Event* _event);
+		void InsertAgent(const Agent* _agent) {} //TODO
+		const vector<Agent*>& GetRelevantAgents(const Event* _event) { return m_relevantAgents; } //TODO
 	private:
 		vector<Agent*> m_agents;
 		vector<Agent*> m_relevantAgents;
@@ -38,3 +38,40 @@ private:
 	Subscribers m_subs;
 	thread m_thread;
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

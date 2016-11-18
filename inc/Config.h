@@ -1,9 +1,12 @@
 #include <map>
+#include <string>
+
+using namespace std;
 
 class Config
 {
 public:
-	enum Fields {TYPE, ROOM, FLOOD, LOG, CONFIG, AGENT_LIB, __NUM_OF_TYPES};
+	enum Fields {TYPE, ROOM, FLOOR, LOG, CONFIG, AGENT_LIB, __NUM_OF_TYPES};
 
 public:
 	Config() : m_currDataField(0) {}

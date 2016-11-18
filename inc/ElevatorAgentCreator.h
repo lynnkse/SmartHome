@@ -1,12 +1,16 @@
+#include "AgentCreator.h"
+
+class Config;
+
 class AgentCreator;
-class FireSensorAgent;
+class ElevatorAgent;
 
 class ElevatorAgentCreator : public AgentCreator
 {
 public:
-	ElevatorAgentCreator(){};
-	virtual ~ElevatorAgentCreator(){};
-	FireSensorAgent* Create(const Config& _conf, const PubSubHub* _hub) const;
+	ElevatorAgentCreator();
+	virtual ~ElevatorAgentCreator();
+	virtual Agent* Create(const Config& _conf, const PubSubHub* _hub) const;
 
 private:
 	void operator=(const ElevatorAgentCreator& _crtr);
