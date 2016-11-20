@@ -14,7 +14,7 @@ Agent* LiveLogCreator::Create(const Config& _conf, const PubSubHub* _hub) const
 }
 
 extern "C"
-AgentCreator* GetLiveLogCreator()
+void* GetLiveLogCreator()
 {
 	return new LiveLogCreator();
 }

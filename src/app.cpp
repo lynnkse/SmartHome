@@ -11,7 +11,7 @@
 
 using namespace std;
 
-typedef AgentCreator* (*F)();
+typedef void* (*F)();
 
 void LoadAndAddCreator(const Config& _config, AgentFactory& _factory)
 {
@@ -24,16 +24,16 @@ void LoadAndAddCreator(const Config& _config, AgentFactory& _factory)
 
 	if(s == "ElevatorAgent") 
 	{	
-		void* handle = dlopen("../ElevatorAgent.so", RTLD_LAZY); //TODO make sure it isn't open twice
+		void* handle = dlopen("./ElevatorAgent.so", RTLD_LAZY); //TODO make sure it isn't open twice
 		F func = (F) dlsym(handle, "GetElevatorAgentCreator");
-		AgentCreator* creator = func();
+		AgentCreator* creator = (AgentCreator*) func();
 		_factory.AddCreator("ElevatorAgent", creator);
 	}	
 	else if(s == "LiveLog")
 	{	
-		void* handle = dlopen("../LiveLog.so", RTLD_LAZY);
+		void* handle = dlopen("./LiveLog.so", RTLD_LAZY);
 		F func = (F) dlsym(handle, "GetLiveLogCreator");
-		AgentCreator* creator = func(); 
+		AgentCreator* creator = (AgentCreator*) func(); 
 		_factory.AddCreator("LiveLog", creator);
 	}
 }

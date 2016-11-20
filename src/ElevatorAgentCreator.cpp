@@ -12,7 +12,7 @@ Agent* ElevatorAgentCreator::Create(const Config& _conf, const PubSubHub* _hub) 
 }
 
 extern "C"
-AgentCreator* GetElevatorAgentCreator()
+void* GetElevatorAgentCreator()
 {
 	return new ElevatorAgentCreator();
 }

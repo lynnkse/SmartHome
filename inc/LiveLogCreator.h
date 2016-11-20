@@ -21,6 +21,6 @@ private:
 };
 
 extern "C"
-AgentCreator* GetLiveLogCreator();
+void* GetLiveLogCreator();
 
 #endif

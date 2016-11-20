@@ -50,20 +50,20 @@ LiveLog.o : $(SRC_PATH)/LiveLog.cpp $(INC_PATH)/LiveLog.h $(INC_PATH)/LogConfig.
 LiveLog.so : LiveLog.o LiveLogCreator.o
 	$(CC) LiveLog.o LiveLogCreator.o -o LiveLog.so -shared 
 
-#ElevatorAgent.o : $(SRC_PATH)/ElevatorAgent.cpp $(INC_PATH)/ElevatorAgent.h $(INC_PATH)/Agent.h $(INC_PATH)/ElevatorAgent.h $(INC_PATH)/Event.h
-#	$(CC) $(CFLAGS) $(SRC_PATH)/ElevatorAgent.cpp -pthread -std=gnu++11 
+ElevatorAgent.o : $(SRC_PATH)/ElevatorAgent.cpp $(INC_PATH)/ElevatorAgent.h $(INC_PATH)/Agent.h $(INC_PATH)/ElevatorAgent.h $(INC_PATH)/Event.h
+	$(CC) $(CFLAGS) $(SRC_PATH)/ElevatorAgent.cpp -pthread -std=gnu++11 
 
-#ElevatorAgentCreator.o : $(INC_PATH)/ElevatorAgentCreator.h $(SRC_PATH)/ElevatorAgentCreator.cpp $(INC_PATH)/ElevatorAgent.h $(INC_PATH)/Config.h
-#	$(CC) $(CFLAGS) $(SRC_PATH)/ElevatorAgentCreator.cpp
+ElevatorAgentCreator.o : $(INC_PATH)/ElevatorAgentCreator.h $(SRC_PATH)/ElevatorAgentCreator.cpp $(INC_PATH)/ElevatorAgent.h $(INC_PATH)/Config.h
+	$(CC) $(CFLAGS) $(SRC_PATH)/ElevatorAgentCreator.cpp
 
-#ElevatorAgent.so : ElevatorAgent.o ElevatorAgentCreator.o
-#	$(CC) ElevatorAgent.o ElevatorAgentCreator.o -o ElevatorAgent.so -shared 
-
-ElevatorAgent.o : $(SRC_PATH)/ElevatorAgent.cpp $(SRC_PATH)/ElevatorAgentCreator.cpp
-	$(CC) $(CFLAGS) $(SRC_PATH)/ElevatorAgent.cpp $(SRC_PATH)/ElevatorAgentCreator.cpp
-
-ElevatorAgent.so : ElevatorAgent.o
+ElevatorAgent.so : ElevatorAgent.o ElevatorAgentCreator.o
 	$(CC) ElevatorAgent.o ElevatorAgentCreator.o -o ElevatorAgent.so -shared 
+
+#ElevatorAgent.o : $(SRC_PATH)/ElevatorAgent.cpp $(SRC_PATH)/ElevatorAgentCreator.cpp
+#	$(CC) $(CFLAGS) $(SRC_PATH)/ElevatorAgent.cpp $(SRC_PATH)/ElevatorAgentCreator.cpp
+
+#ElevatorAgent.so : ElevatorAgent.o
+#	$(CC) ElevatorAgent.o ElevatorAgentCreator.o -o ElevatorAgent.so -shared 
 
 clean :
 	rm -f *.o
