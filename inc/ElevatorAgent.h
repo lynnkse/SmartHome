@@ -17,17 +17,17 @@ class ElevatorAgent : public Agent
 public:
 	ElevatorAgent(const Config& _config, const PubSubHub* _hub);
 	~ElevatorAgent();
+	virtual void Run();
 	
 protected:
 	virtual string GetLocation() const;
+	virtual void ProcessEvents();
+	virtual void GenerateEvent();
 
 private:
 	void operator=(const Agent& _agnt);
 	ElevatorAgent(const Agent& _agnt);
 	//virtual void Send(const Event& _event);
-	virtual void Run();
-	void ProcessEvents();
-	void GenerateEvent();
 	int m_currFloor;
 
 	thread m_recievingThread;

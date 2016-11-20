@@ -10,3 +10,9 @@ Agent* ElevatorAgentCreator::Create(const Config& _conf, const PubSubHub* _hub) 
 {
 	return new ElevatorAgent(_conf, _hub);
 }
+
+extern "C"
+AgentCreator* GetElevatorAgentCreator()
+{
+	return new ElevatorAgentCreator();
+}

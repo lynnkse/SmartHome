@@ -1,3 +1,7 @@
+#ifndef __AGENTFACTORY_H__
+#define __AGENTFACTORY_H__
+
+
 #include <map>
 
 class Agent;
@@ -21,3 +25,4 @@ private:
 	map<string, AgentCreator*> m_creators;
 };
 
+#endif

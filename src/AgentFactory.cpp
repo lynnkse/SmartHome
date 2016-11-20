@@ -20,7 +20,7 @@ void AgentFactory::AddCreator(const string& _name, const AgentCreator* _creator)
 
 Agent* AgentFactory::CreateAgent(const Config& _conf, const PubSubHub* _hub) const
 {
-	map<string, AgentCreator*>::const_iterator it = m_creators.find(_conf.GetType());
+	map<string, AgentCreator*>::const_iterator it = m_creators.find(_conf.GetData("type"));
 	if(it != m_creators.end())
 	{
 		return (it->second)->Create(_conf, _hub);

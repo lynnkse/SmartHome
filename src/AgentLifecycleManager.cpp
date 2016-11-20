@@ -4,6 +4,8 @@
 #include "../inc/AgentLifecycleManager.h"
 #include "../inc/Config.h"
 #include <vector>
+#include <iostream>//for test
+using namespace std;
 
 AgentLifecycleManager::AgentLifecycleManager(AgentFactory* _factory, PubSubHub* _hub) : m_factory(_factory), m_hub(_hub) 
 {}
@@ -15,9 +17,12 @@ void AgentLifecycleManager::CreateAgents(const vector<Config>& _configs)
 {
 	for(vector<Config>::const_iterator it = _configs.begin(); it != _configs.end(); ++it)
 	{
+		//cout << "AgentLifecycleManager : Agent created. Type: " << (*it).GetData("type") << endl;		
 		Agent* agent = 	m_factory->CreateAgent(*it, m_hub);
 		agent->SubscribeToHub();
 		m_agents.push_back(agent);
+		//agent->SubscribeToHub();
+		agent->Run();
 	}
 }
 

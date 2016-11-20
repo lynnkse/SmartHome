@@ -1,25 +1,82 @@
+#ifndef __LIVELOG_H__
+#define __LIVELOG_H__
+
 #include <map>
 #include <map>
+#include "../inc/Agent.h"
+#include <vector>
+#include <thread>
+
+using namespace std;
 
 class Server;
+class LogConfig;
+class Config;
+class PubSubHub;
+class Event;
 
-class LiveLog
+class LiveLog : public Agent
 {
 public:
-	LiveLog();
-	~LiveLog();	
-	void ProcessEvent(const Event& _event) const;	
+	LiveLog(const Config& _config, const PubSubHub* _hub, const LogConfig& _logConfig);
+	~LiveLog();		
 	void AddConnection(const string& _userName, const string& _level);
+	virtual void Run();
+
+protected:
+	virtual void ProcessEvents();
+	virtual void GenerateEvent();
 
 private:
 	void operator=(const LiveLog& _log);
-	void LiveLog(const LiveLog& _log);
-	Run();
-	
+	LiveLog(const LiveLog& _log);
+		
 	map<string, vector<string> > m_connections;
 	Server* m_server;
-	SafeQueue* m_eventsQueue;
-	SafeQueue* m_newConnections;
+	//SafeDeque* m_eventsQueue;
+	//SafeDeque<>* m_newConnections;
 	pthread_t m_eventsThread;
 	pthread_t m_connectionsThread;
+	thread m_recievingThread;
+	thread m_sendingThread;
 };
+
+#endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,3 +1,7 @@
+#ifndef __AGENTLIFECYCLEMANAGER_H__
+#define __AGENTLIFECYCLEMANAGER_H__
+
+
 #include <vector>
 
 class PubSubHub;
@@ -24,3 +28,5 @@ private:
 	PubSubHub* m_hub;
 	vector<Agent*> m_agents;
 };
+
+#endif

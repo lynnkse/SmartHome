@@ -3,6 +3,7 @@
 #include <thread>
 #include <iostream>
 #include <sstream> 
+#include <unistd.h>
 #include "../inc/Agent.h"
 #include "../inc/ElevatorAgent.h"
 #include "../inc/Event.h"
@@ -17,25 +18,17 @@ ElevatorAgent::~ElevatorAgent() {}
 
 void ElevatorAgent::Run()
 {
-	//m_recievingThread = thread(&ElevatorAgent::ProcessEvents, this);
 	m_recievingThread = thread([this] { ProcessEvents(); } );
 	m_sendingThread = thread([this] { GenerateEvent(); } );	
-	
-	/*if(pthread_create(&m_recievingThread, NULL, &ProcessEvents, NULL))
-	{
-		throw ("couldn't start thread'");
-	}
-	
-	if(pthread_create(&m_sendingThread, NULL, , NULL))
-	{
-		throw ("couldn't start thread'");
-	}*/
+	//cout << "Elevator run" << endl;
 }
 
 void ElevatorAgent::ProcessEvents() 
 {
 	while(1) //TODO fix this, it should die
 	{	
+		//cout << "Elevator ProcessEvents" << endl;	
+	
 		Event* e = (Event*) GetEvent();
 	
 		if(e->GetType() == "Fire_Detected")
@@ -54,12 +47,14 @@ void ElevatorAgent::GenerateEvent()
 {
 	while(1)
 	{
+		//cout << "Elevator GenerateEvent" << endl;			
+		sleep(1);
 		m_currFloor = m_currFloor + (rand()%4 - 2);
 		time_t timer;
 		time(&timer);
 		stringstream buffer;
 		buffer << "Elevator moved to " << m_currFloor << "floor" << endl;
-		Event* elevatorCurrFloorChange = new Event(timer, "Elevator_Action", buffer.str(), GetLocation());
+		Event* elevatorCurrFloorChange = new Event(timer, GetData("event"), buffer.str(), GetLocation());
 		SendEventToHub(elevatorCurrFloorChange);
 	}
 }

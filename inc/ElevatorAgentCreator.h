@@ -1,3 +1,6 @@
+#ifndef __ELEVATORAGENTCREATOR_H__
+#define __ELEVATORAGENTCREATOR_H__
+
 #include "AgentCreator.h"
 
 class Config;
@@ -16,3 +19,8 @@ private:
 	void operator=(const ElevatorAgentCreator& _crtr);
 	ElevatorAgentCreator(const ElevatorAgentCreator& _crtr);
 };
+
+extern "C"
+AgentCreator* GetElevatorAgentCreator();
+
+#endif

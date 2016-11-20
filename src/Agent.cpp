@@ -4,7 +4,7 @@
 #include "../inc/Config.h"
 #include "../inc/PubSubHub.h"
 
-Agent::Agent(const Config& _config, const PubSubHub* _hub) : m_type(_config.GetType()), m_room(_config.GetRoom()), m_floor(_config.GetFloor()), m_log(_config.GetLog()), m_config(_config.GetConfig())
+Agent::Agent(const Config& _config, const PubSubHub* _hub) : m_config(_config.GetConfig())
 {
 	if(!_hub) 
 		throw("nullptr exception");	
@@ -45,7 +45,12 @@ const PubSubHub* Agent::GetHub() const
 
 string Agent::GetLocation() const
 {
-	return m_floor + "|" + m_room;
+	map<string, string>::const_iterator room_it = m_config.find("room");
+	map<string, string>::const_iterator floor_it = m_config.find("floor");
+	string loc;
+	if(floor_it != m_config.end()) loc += (*floor_it).second;
+	if(room_it != m_config.end()) loc += (*room_it).second;
+	return loc;
 }
 
 void Agent::SendEventToHub(const Event* _event)
@@ -56,6 +61,19 @@ void Agent::SendEventToHub(const Event* _event)
 void Agent::SubscribeToHub()
 {
 	m_hub->Subscribe(this);
+}
+
+const string& Agent::GetData(const string& _key)
+{
+	map<string, string>::const_iterator it = m_config.find(_key);
+	if(it != m_config.end())
+	{
+		return (*it).second;
+	}
+	else
+	{
+		throw ("no such field");
+	}
 }
 
 

@@ -3,6 +3,9 @@
 #include "../inc/SafeDeque.h"
 #include "../inc/Agent.h"
 
+#include <iostream>//for test
+using namespace std;
+
 PubSubHub::PubSubHub()
 {
 	m_events = new SafeDeque<Event*>();
@@ -31,6 +34,7 @@ void PubSubHub::Publish(const Event* _event)
 void PubSubHub::Subscribe(const Agent* _agent)
 {
 	m_subs.InsertAgent(_agent);
+	cout << "Agent inserted" << endl;
 }
 
 void PubSubHub::Recieve(const Event* _event)
@@ -41,12 +45,15 @@ void PubSubHub::Recieve(const Event* _event)
 void PubSubHub::Run()
 {
 	m_thread = thread([this] { ProcessEvents(); } );
+	
+	//cout << "Hub run" << endl;
 }
 
 void PubSubHub::ProcessEvents()
 {
 	while(1) //FIXME this shoul die
 	{	
+		//cout << "Hub ProcessEvents" << endl;
 		Event* event = m_events->Pop();
 		Publish(event);
 	}

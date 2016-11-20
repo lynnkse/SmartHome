@@ -1,5 +1,6 @@
 #include <vector>
 #include <thread>
+#include <vector>
 
 using namespace std;
 
@@ -14,8 +15,8 @@ private:
 	class Subscribers
 	{
 	public:
-		void InsertAgent(const Agent* _agent) {} //TODO
-		const vector<Agent*>& GetRelevantAgents(const Event* _event) { return m_relevantAgents; } //TODO
+		void InsertAgent(const Agent* _agent) { m_agents.push_back((Agent*)_agent); m_relevantAgents.push_back((Agent*)_agent); } 
+		const vector<Agent*>& GetRelevantAgents(const Event* _event) { return m_relevantAgents; } 
 	private:
 		vector<Agent*> m_agents;
 		vector<Agent*> m_relevantAgents;

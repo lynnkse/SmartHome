@@ -1,3 +1,7 @@
+#ifndef __AGENTCREATOR_H__
+#define __AGENTCREATOR_H__
+
+
 class Config;
 class Agent;
 class PubSubHub;
@@ -13,3 +17,5 @@ private:
 	void operator=(const AgentCreator& _crtr);
 	AgentCreator(const AgentCreator& _crtr);
 };
+
+#endif
