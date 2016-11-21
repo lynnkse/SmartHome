@@ -4,6 +4,7 @@
 #include <thread>
 #include <string>
 #include <map>
+#include <vector>
 
 using namespace std;
 
@@ -33,20 +34,22 @@ protected:
 	const string& GetData(const string& _key) const;
 	virtual void ProcessEvents() = 0;
 	virtual void GenerateEvent() = 0;
+	void AddAction(const string& _action);
+	const string& GetLocationOfInterest() const;
+	string GetNextTriggerIvent() const;
 
 private:
 	const Agent& operator=(const Agent& _agnt);
 	Agent(const Agent& _agnt);
 	void Send(const Event* _event) const;
 	void Recieve(const Event* _event);
+	void SetConfig(const string& _key, const string& _val);
 	
 	SafeDeque<Event*>* m_deque;
-	//string m_id; TODO add this to conf.
-	//string m_type;
-	//string m_room;
-	//string m_floor;
-    //string m_log;
+	//set<string> m_actions;
+	map<string, string> m_triggersAndActions;
 	map<string, string> m_config;
+	vector<string> m_configTokens;
 	PubSubHub* m_hub;
 };
 

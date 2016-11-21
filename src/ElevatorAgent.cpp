@@ -5,14 +5,17 @@
 #include <sstream> 
 #include <unistd.h>
 #include "../inc/Agent.h"
-#include "../inc/ElevatorAgent.h"
+#include "../inc/ElevatorAgent.h"	
 #include "../inc/Event.h"
 
 using namespace std;
 
 const int INIT_FLOOR = 5;
 
-ElevatorAgent::ElevatorAgent(const Config& _config, const PubSubHub* _hub) : Agent(_config, _hub), m_currFloor(INIT_FLOOR) {}
+ElevatorAgent::ElevatorAgent(const Config& _config, const PubSubHub* _hub) : Agent(_config, _hub), m_currFloor(INIT_FLOOR) 
+{
+	AddAction("Go_Down");
+}
 
 ElevatorAgent::~ElevatorAgent() {}
 
@@ -55,7 +58,7 @@ void ElevatorAgent::GenerateEvent()
 		time(&timer);
 		stringstream buffer;
 		buffer << "Elevator moved to " << m_currFloor << "floor" << endl;
-		Event* elevatorCurrFloorChange = new Event(timer, GetData("OutEvent"), buffer.str(), GetLocation());
+		Event* elevatorCurrFloorChange = new Event(timer, GetData("Event"), buffer.str(), GetLocation());
 		SendEventToHub(elevatorCurrFloorChange);
 	}
 }

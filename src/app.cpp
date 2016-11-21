@@ -40,7 +40,7 @@ void LoadAndAddCreator(const Config& _config, AgentFactory& _factory)
 
 int main()
 {
-	Configurator configurator("whatever", "who cares");
+	Configurator configurator("agents.config", "who cares");
 	vector<Config> configs = configurator.GetAgentsConfigs();
 
 	AgentFactory& agentFactory = AgentFactory::GetInstance();

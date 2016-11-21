@@ -1,6 +1,6 @@
 CC = g++ -pthread
 
-CFLAGS = -g -c -std=gnu++11  -fPIC
+CFLAGS = -g -c -std=gnu++11  -fPIC 
 
 INC_PATH = ./inc
 SRC_PATH = ./src
@@ -10,10 +10,10 @@ OBJC = Agent.o Event.o PubSubHub.o AgentFactory.o app.o AgentLifecycleManager.o 
 .PHONY : clean rebuild clean_so rebuild_so
 
 app : $(OBJC) 
-	$(CC) $(OBJC) -o app  -ldl -rdynamic 
+	$(CC) $(OBJC) $(SRC_PATH)/Parser_t.cpp $(SRC_PATH)/Tokenizer_t.cpp -o app  -ldl -rdynamic 
 
 Agent.o : $(SRC_PATH)/Agent.cpp $(INC_PATH)/Agent.h $(INC_PATH)/SafeDeque.h $(INC_PATH)/Event.h
-	$(CC) $(CFLAGS) $(SRC_PATH)/Agent.cpp -pthread 
+	$(CC) $(CFLAGS) $(SRC_PATH)/Agent.cpp  -pthread 
 
 Event.o : $(INC_PATH)/Event.h $(SRC_PATH)/Event.cpp
 	$(CC) $(CFLAGS) $(SRC_PATH)/Event.cpp
@@ -33,8 +33,8 @@ Config.o : $(SRC_PATH)/Config.cpp $(INC_PATH)/Config.h
 LogConfig.o : $(SRC_PATH)/LogConfig.cpp $(INC_PATH)/LogConfig.h	
 	$(CC) $(CFLAGS) $(SRC_PATH)/LogConfig.cpp
 
-Configurator.o : $(SRC_PATH)/Configurator.cpp $(INC_PATH)/Configurator.h
-	$(CC) $(CFLAGS) $(SRC_PATH)/Configurator.cpp
+Configurator.o : $(SRC_PATH)/Configurator.cpp $(INC_PATH)/Configurator.h $(SRC_PATH)/Parser_t.cpp $(INC_PATH)/Parser_t.h $(SRC_PATH)/Tokenizer_t.cpp $(INC_PATH)/Tokenizer_t.h 
+	$(CC) $(CFLAGS) $(SRC_PATH)/Configurator.cpp 
 
 app.o : $(SRC_PATH)/app.cpp $(INC_PATH)/Configurator.h $(INC_PATH)/Config.h
 	$(CC) $(CFLAGS) $(SRC_PATH)/app.cpp 

@@ -93,8 +93,8 @@ void PubSubHub::Subscribers::InsertAgent(Agent* _agent)
 		
 	try
 	{	
-		loc = _agent->GetData("From");
-		event = _agent->GetData("InEvent");	
+		loc = _agent->GetLocationOfInterest();
+		//event = _agent->GetData("InEvent");	
 	}
 	catch(const char* _e)
 	{
@@ -114,16 +114,21 @@ void PubSubHub::Subscribers::InsertAgent(Agent* _agent)
 		m_byLocation[loc] = vec;
 	}
 
-	it = m_byEvent.find(event);
-	if(m_byEvent.find(event) != m_byEvent.end())	
-	{
-		it->second.push_back(_agent);
-	}
-	else
-	{
-		vector<Agent*> vec;
-		vec.push_back(_agent);
-		m_byEvent[event] = vec;
+	event = _agent->GetNextTriggerIvent();
+	while(event != "NO_MORE_TRIGGER_EVENTS")
+	{	
+		it = m_byEvent.find(event);
+		if(m_byEvent.find(event) != m_byEvent.end())	
+		{
+			it->second.push_back(_agent);
+		}
+		else
+		{
+			vector<Agent*> vec;
+			vec.push_back(_agent);
+			m_byEvent[event] = vec;
+		}
+		event = _agent->GetNextTriggerIvent();
 	}
 }
 
