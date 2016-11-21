@@ -7,7 +7,7 @@ SRC_PATH = ./src
 
 OBJC = Agent.o Event.o PubSubHub.o AgentFactory.o app.o AgentLifecycleManager.o Config.o Configurator.o LogConfig.o 
 
-.PHONY : clean rebuild
+.PHONY : clean rebuild clean_so rebuild_so
 
 app : $(OBJC) 
 	$(CC) $(OBJC) -o app  -ldl -rdynamic 
@@ -59,18 +59,17 @@ ElevatorAgentCreator.o : $(INC_PATH)/ElevatorAgentCreator.h $(SRC_PATH)/Elevator
 ElevatorAgent.so : ElevatorAgent.o ElevatorAgentCreator.o
 	$(CC) ElevatorAgent.o ElevatorAgentCreator.o -o ElevatorAgent.so -shared 
 
-#ElevatorAgent.o : $(SRC_PATH)/ElevatorAgent.cpp $(SRC_PATH)/ElevatorAgentCreator.cpp
-#	$(CC) $(CFLAGS) $(SRC_PATH)/ElevatorAgent.cpp $(SRC_PATH)/ElevatorAgentCreator.cpp
-
-#ElevatorAgent.so : ElevatorAgent.o
-#	$(CC) ElevatorAgent.o ElevatorAgentCreator.o -o ElevatorAgent.so -shared 
-
 clean :
 	rm -f *.o
 	rm -f *.o
 
+clean_so :
+	rm -f *.o
+	rm -f *.so
+
 rebuild : clean app
 
+rebuild_so : clean_so LiveLog.so ElevatorAgent.so
 
  
 

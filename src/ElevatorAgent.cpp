@@ -18,6 +18,7 @@ ElevatorAgent::~ElevatorAgent() {}
 
 void ElevatorAgent::Run()
 {
+	SubscribeToHub();	
 	m_recievingThread = thread([this] { ProcessEvents(); } );
 	m_sendingThread = thread([this] { GenerateEvent(); } );	
 	//cout << "Elevator run" << endl;
@@ -54,7 +55,7 @@ void ElevatorAgent::GenerateEvent()
 		time(&timer);
 		stringstream buffer;
 		buffer << "Elevator moved to " << m_currFloor << "floor" << endl;
-		Event* elevatorCurrFloorChange = new Event(timer, GetData("event"), buffer.str(), GetLocation());
+		Event* elevatorCurrFloorChange = new Event(timer, GetData("OutEvent"), buffer.str(), GetLocation());
 		SendEventToHub(elevatorCurrFloorChange);
 	}
 }

@@ -19,6 +19,7 @@ LiveLog::~LiveLog() {}
 
 void LiveLog::Run()
 {
+	SubscribeToHub();	
 	m_recievingThread = thread([this] { ProcessEvents(); } );
 	m_sendingThread = thread([this] { GenerateEvent(); } );	
 }	

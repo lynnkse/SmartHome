@@ -19,7 +19,7 @@ void AgentLifecycleManager::CreateAgents(const vector<Config>& _configs)
 	{
 		//cout << "AgentLifecycleManager : Agent created. Type: " << (*it).GetData("type") << endl;		
 		Agent* agent = 	m_factory->CreateAgent(*it, m_hub);
-		agent->SubscribeToHub();
+		//agent->SubscribeToHub();
 		m_agents.push_back(agent);
 		//agent->SubscribeToHub();
 		agent->Run();

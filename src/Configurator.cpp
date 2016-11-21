@@ -18,12 +18,19 @@ vector<Config> Configurator::GetAgentsConfigs() const
 	conf.SetData("type", "ElevatorAgent");
 	conf.SetData("id", "elev-1");
 	conf.SetData("log", "elevator_log");
-	conf.SetData("event", "floor");
+	conf.SetData("OutEvent", "floor");
+	conf.SetData("InEvent", "Fire_Detected");
+	conf.SetData("log", "maintance");
+	conf.SetData("From", "All");
+	
 	vec.push_back(conf);
 
 	Config conf1;
 	conf1.SetData("type", "LiveLog");
 	conf1.SetData("id", "live-log");
+	conf1.SetData("OutEvent", "All");
+	conf1.SetData("InEvent", "All");
+	conf1.SetData("From", "All");
 	vec.push_back(conf1);
 	//conf1.SetData("log", "live_log");
 	//conf1.SetData("event", "eloor");

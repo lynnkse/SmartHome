@@ -30,7 +30,7 @@ protected:
 	const PubSubHub* GetHub() const;
 	virtual string GetLocation() const;
 	void SendEventToHub(const Event* _event);
-	const string& GetData(const string& _key);
+	const string& GetData(const string& _key) const;
 	virtual void ProcessEvents() = 0;
 	virtual void GenerateEvent() = 0;
 

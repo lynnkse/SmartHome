@@ -2,6 +2,9 @@
 #include "../inc/Agent.h"
 #include "../inc/AgentFactory.h"
 #include "../inc/Config.h"
+#include <iostream>
+
+using namespace std;
 
 AgentFactory::AgentFactory() {}
 
@@ -23,7 +26,15 @@ Agent* AgentFactory::CreateAgent(const Config& _conf, const PubSubHub* _hub) con
 	map<string, AgentCreator*>::const_iterator it = m_creators.find(_conf.GetData("type"));
 	if(it != m_creators.end())
 	{
-		return (it->second)->Create(_conf, _hub);
+		try
+		{		
+			return (it->second)->Create(_conf, _hub);
+		}
+		catch(const char* _e)
+		{
+			cout << _e << endl;
+			return 0;
+		}
 	}
 	else
 	{

@@ -3,11 +3,17 @@
 #include "../inc/Agent.h"
 #include "../inc/Config.h"
 #include "../inc/PubSubHub.h"
+#include <iostream>
+
+using namespace std;
 
 Agent::Agent(const Config& _config, const PubSubHub* _hub) : m_config(_config.GetConfig())
 {
 	if(!_hub) 
-		throw("nullptr exception");	
+		{
+			cout << "Agent: Agent()" << endl;		
+			throw("nullptr exception");	
+		}	
 	else
 		m_hub = (PubSubHub*) _hub;
 
@@ -63,15 +69,16 @@ void Agent::SubscribeToHub()
 	m_hub->Subscribe(this);
 }
 
-const string& Agent::GetData(const string& _key)
+const string& Agent::GetData(const string& _key) const
 {
 	map<string, string>::const_iterator it = m_config.find(_key);
 	if(it != m_config.end())
-	{
+	{	
 		return (*it).second;
 	}
 	else
 	{
+		cout << "Agent::GetData()" << endl;		
 		throw ("no such field");
 	}
 }

@@ -1,6 +1,7 @@
 #include <vector>
 #include <thread>
 #include <vector>
+#include <map>
 
 using namespace std;
 
@@ -15,17 +16,21 @@ private:
 	class Subscribers
 	{
 	public:
-		void InsertAgent(const Agent* _agent) { m_agents.push_back((Agent*)_agent); m_relevantAgents.push_back((Agent*)_agent); } 
-		const vector<Agent*>& GetRelevantAgents(const Event* _event) { return m_relevantAgents; } 
+		void InsertAgent(Agent* _agent);
+		const vector<Agent*>& GetRelevantAgents(const Event* _event);
+		const vector<Agent*>& GetIntersection(vector<vector<Agent*> > &sets);
 	private:
-		vector<Agent*> m_agents;
+		//vector<Agent*> m_agents;
+		map<string, vector<Agent*> > m_byEvent;
+		map<string, vector<Agent*> > m_byLocation;
+		//map<string, vector<Agent*> > m_byEvent;
 		vector<Agent*> m_relevantAgents;
 	};
 
 public:
 	PubSubHub();
 	~PubSubHub();	
-	void Subscribe(const Agent* _agent);
+	void Subscribe(Agent* _agent);
 	void Recieve(const Event* _event);
 	void Run();
 	void ProcessEvents();
@@ -34,7 +39,6 @@ private:
 	const PubSubHub& operator=(const PubSubHub& _hub);
 	PubSubHub(const PubSubHub& _hub);
 	void Publish(const Event* _event);
-	vector<int> PubSubHub::GetIntersection(vector<vector<int> > &sets);
 	
 	SafeDeque<Event*>* m_events;
 	Subscribers m_subs;

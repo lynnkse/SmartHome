@@ -1,5 +1,6 @@
 #include "../inc/LogConfig.h"
 #include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -21,6 +22,7 @@ const string& LogConfig::GetData(const string& _key)
 	}
 	else
 	{
+		cout << "LogConfig::GetData()" << endl;		
 		throw ("no such field");
 	}
 }

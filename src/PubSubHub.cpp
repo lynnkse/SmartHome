@@ -5,6 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include <map>
+#include <set>
 
 #include <iostream>//for test
 using namespace std;
@@ -34,7 +35,7 @@ void PubSubHub::Publish(const Event* _event)
 }
 
 
-void PubSubHub::Subscribe(const Agent* _agent)
+void PubSubHub::Subscribe(Agent* _agent)
 {
 	m_subs.InsertAgent(_agent);
 	//cout << "Agent inserted" << endl;
@@ -56,95 +57,101 @@ void PubSubHub::ProcessEvents()
 {
 	while(1) //FIXME this shoul die
 	{	
-		//cout << "Hub ProcessEvents" << endl;
 		Event* event = m_events->Pop();
 		Publish(event);
 	}
 }
 
-vector<int> PubSubHub::GetIntersection(vector<vector<int> > &sets)
-{
-    vector<int> result;  
-    int smallSetInd = 0;  
-    int minSize = sets[0].size(); 
- 
-    // sort all the sets, and also find the smallest set
-    for (int i = 1 ; i < sets.size() ; i++)
+const vector<Agent*>& PubSubHub::Subscribers::GetIntersection(vector<vector<Agent*> > &sets)
+{   
+	for (vector<Agent*>::iterator it = sets[0].begin(); it != sets[0].end(); ++it)
     {
-        // sort this set
-        sort(sets[i].begin(), sets[i].end());
- 
-        // update minSize, if needed
-        if (minSize > sets[i].size())
-        {
-            minSize = sets[i].size();
-            smallSetInd = i;
-        }
-    }
- 
-    map<int,int> elementsMap;
- 
-    // Add all the elements of smallest set to a map, if already present,
-    // update the frequency
-    for (int i = 0; i < sets[smallSetInd].size(); i++)
-    {
-        if (elementsMap.find( sets[smallSetInd][i] ) == elementsMap.end())
-            elementsMap[ sets[smallSetInd][i] ] = 1;
-        else
-            elementsMap[ sets[smallSetInd][i] ]++;
-    }
- 
-    // iterate through the map elements to see if they are present in
-    // remaining sets
-    map<int,int>::iterator it;
-    for (it = elementsMap.begin(); it != elementsMap.end(); ++it)
-    {
-        int elem = it->first;
-        int freq = it->second;
+        Agent* elem = *it;
  
         bool bFound = true;
  
-        // Iterate through all sets
-        for (int j = 0 ; j < sets.size() ; j++)
+        for (int j = 1; j < sets.size() ; j++)
         {
-            // If this set is not the smallest set, then do binary search in it
-            if (j != smallSetInd)
+            if (find(sets[j].begin(), sets[j].end(), elem) == sets[j].end())
             {
-                // If the element is found in this set, then find its frequency
-                if (binary_search( sets[j].begin(), sets[j].end(), elem ))
-                {
-                   int lInd = lower_bound(sets[j].begin(), sets[j].end(), elem)
-                                                            - sets[j].begin();
-                   int rInd = upper_bound(sets[j].begin(), sets[j].end(), elem)
-                                                            - sets[j].begin();
- 
-                   // Update the minimum frequency, if needed
-                   if ((rInd - lInd) < freq)
-                       freq = rInd - lInd;
-                }
-                // If the element is not present in any set, then no need 
-                // to proceed for this element.
-                else
-                {
-                    bFound = false;
-                    break;
-                }
+               bFound = false;
             }
         }
  
-        // If element was found in all sets, then add it to result 'freq' times
         if (bFound)
         {
-            for (int k = 0; k < freq; k++)
-                result.push_back(elem);
+                m_relevantAgents.push_back(elem);
         }
     }
-    return result;
+    return m_relevantAgents;
 }
 
+void PubSubHub::Subscribers::InsertAgent(Agent* _agent)
+{ 
+	string loc;
+	string event;		
+		
+	try
+	{	
+		loc = _agent->GetData("From");
+		event = _agent->GetData("InEvent");	
+	}
+	catch(const char* _e)
+	{
+		cout << _e << endl;
+		return;
+	}
+	
+	map<string, vector<Agent*> >::iterator it = m_byLocation.find(loc);
+	if(m_byLocation.find(loc) != m_byLocation.end())	
+	{
+		(it->second).push_back(_agent);
+	}
+	else
+	{
+		vector<Agent*> vec;
+		vec.push_back(_agent);
+		m_byLocation[loc] = vec;
+	}
 
+	it = m_byEvent.find(event);
+	if(m_byEvent.find(event) != m_byEvent.end())	
+	{
+		it->second.push_back(_agent);
+	}
+	else
+	{
+		vector<Agent*> vec;
+		vec.push_back(_agent);
+		m_byEvent[event] = vec;
+	}
+}
 
+const vector<Agent*>& PubSubHub::Subscribers::GetRelevantAgents(const Event* _event) 
+{ 
+	m_relevantAgents.clear();	
 
+	map<string, vector<Agent*> >::const_iterator it_loc = m_byLocation.find(_event->GetLocation());
+	if(it_loc == m_byLocation.end())
+	{
+		it_loc = m_byLocation.find("All");
+	}
+	if(it_loc == m_byLocation.end())
+		return m_relevantAgents;	
+	
+	map<string, vector<Agent*> >::const_iterator it_event = m_byEvent.find(_event->GetType());
+	if(it_event == m_byEvent.end())
+	{
+		it_event = m_byEvent.find("All");
+	}
+	if(it_event == m_byEvent.end())
+		return m_relevantAgents;
+
+	vector<vector<Agent*> > sets;
+	sets.push_back(it_loc->second);
+	sets.push_back(it_event->second);
+	return GetIntersection(sets);
+} 
 
 
 
