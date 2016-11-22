@@ -3,3 +3,6 @@ src/AgentFactory.cpp~
 inc/AgentCreator.h~ inc/AgentFactory.h~
 inc/*~
 *.o
+~.so
+app
+ElevatorAgent.so LiveLog.so SmokeDetector.so

@@ -38,6 +38,8 @@ protected:
 	string GetAction(const string& _event) const;
 	const string& GetLocationOfInterest() const;
 	string GetNextTriggerIvent();
+	const string& GetLog();
+	//const string& GetEventType();
 
 private:
 	const Agent& operator=(const Agent& _agnt);

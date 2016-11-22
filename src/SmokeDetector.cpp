@@ -1,6 +1,9 @@
 #include "../inc/SmokeDetector.h"
 #include "../inc/Event.h"
 #include <unistd.h>
+#include <iostream>//for test
+
+using namespace std;
 
 SmokeDetector::SmokeDetector(const Config& _config, const PubSubHub* _hub) : Agent(_config, _hub, false) {}
 
@@ -16,7 +19,10 @@ void SmokeDetector::GenerateEvent()
 		sleep(2);
 		time_t timer;
 		time(&timer);
-		Event* event = new Event(timer, "Fire_Detected", "Fire detected", GetLocation());
+		Event* event = new Event(timer, GetData("Event"), "Fire detected", GetLocation(), GetData("log"));
+		
+		//cout << "=================================> Event created. Log : " << event->GetLog() << endl;
+
 		SendEventToHub(event);
 	}
 }

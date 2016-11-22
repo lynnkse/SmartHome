@@ -11,30 +11,22 @@ using namespace std;
 
 LiveLog::LiveLog(const Config& _config, const PubSubHub* _hub, const LogConfig& _logConfig) : Agent(_config, _hub, true)
 {
-	//TODO set server here
-	//cout << "LiveLog: LiveLog Created" << endl;
 	AddAction("sendtoserver");
 }
 
 LiveLog::~LiveLog() {}
 
-/*void LiveLog::Run()
-{
-	SubscribeToHub();	
-	m_recievingThread = thread([this] { ProcessEvents(); } );
-	m_sendingThread = thread([this] { GenerateEvent(); } );	
-}*/
-
 void LiveLog::ProcessEvents()
 {
-	//cout << "LiveLog ProcessEvents" << endl;	
 	while(1) //TODO fix this, it should die
 	{	
 		Event* e = (Event*) GetEvent();
 	
-		if(GetAction(e->GetType()) == "sendtoserver")
+		cout << "Livelog received event. Log: " << e->GetLog() << endl;
+	
+		if(GetAction(e->GetType()) == "sendtoserver" && (GetLog() == e->GetLog() || GetLog() == "All"))
 		{
-			cout << "========>LiveLog msg:" <<e->GetData()  << "Type: " << e->GetType() << endl;
+			cout << "========>LiveLog msg:" <<e->GetData()  << "Log: " << e->GetLog() << endl;
 		}
 
 		delete e;

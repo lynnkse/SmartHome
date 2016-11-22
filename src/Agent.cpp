@@ -31,6 +31,7 @@ Agent::Agent(const Config& _config, const PubSubHub* _hub, bool _isController) :
 		++it;
 		SetConfig("From", *it);
 	}
+	else
 	{
 		SetConfig("From", "All");
 	}
@@ -41,6 +42,7 @@ Agent::Agent(const Config& _config, const PubSubHub* _hub, bool _isController) :
 		++iter;
 		SetConfig("Event", *iter);
 	}
+
 
 	m_deque = new SafeDeque<Event*>();
 }
@@ -177,8 +179,15 @@ void Agent::Run()
 	m_sendingThread = thread([this] { GenerateEvent(); } );	
 }
 
+const string& Agent::GetLog() 
+{
+	return m_config["log"];
+}
 
-
+/*const string& Agent::GetEventType()
+{
+	return m_config["Event"];
+}*/
 
 
 

@@ -27,6 +27,9 @@ PubSubHub::~PubSubHub()
 void PubSubHub::Publish(const Event* _event) 
 {
 	const vector<Agent*>& relevantSubscribers = m_subs.GetRelevantAgents(_event);
+	
+	cout << "Event of type " << _event->GetType() << ", Log: " << _event->GetLog() << " is being sent to " << relevantSubscribers.size() << endl;
+
 	for(vector<Agent*>::const_iterator it = relevantSubscribers.begin(); it != relevantSubscribers.end(); ++it)
 	{
 		(*it)->Recieve(new Event(*_event));	
@@ -135,6 +138,8 @@ void PubSubHub::Subscribers::InsertAgent(Agent* _agent)
 const vector<Agent*>& PubSubHub::Subscribers::GetRelevantAgents(const Event* _event) 
 { 
 	m_relevantAgents.clear();	
+
+	string s = _event->GetType();
 
 	map<string, vector<Agent*> >::const_iterator it_loc = m_byLocation.find(_event->GetLocation());
 	if(it_loc == m_byLocation.end())

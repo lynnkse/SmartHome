@@ -39,7 +39,8 @@ void ElevatorAgent::ProcessEvents()
 		{
 			time_t timer;
 			time(&timer);
-			Event* elevatorDownEvent = new Event(timer, "Elevator_Action", "Elevator goes down on event of fire", GetLocation());
+			//cout << "Evelator recived event. Log: " << e->GetLog() << endl;
+			Event* elevatorDownEvent = new Event(timer, GetData("Event"), "Elevator goes down on event of fire", GetLocation(), GetLog());
 			SendEventToHub(elevatorDownEvent);
 		}
 		
@@ -58,7 +59,7 @@ void ElevatorAgent::GenerateEvent()
 		time(&timer);
 		stringstream buffer;
 		buffer << "Elevator moved to " << m_currFloor << "floor" << endl;
-		Event* elevatorCurrFloorChange = new Event(timer, GetData("Event"), buffer.str(), GetLocation());
+		Event* elevatorCurrFloorChange = new Event(timer, GetData("Event"), buffer.str(), GetLocation(), GetLog());
 		SendEventToHub(elevatorCurrFloorChange);
 	}
 }

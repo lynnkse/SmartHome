@@ -6,15 +6,17 @@ using namespace std;
 class Event
 {
 public:
-	Event(time_t _timestamp, string _type, string _data, string _location);
+	Event(const time_t& _timestamp, const string& _type, const string& _data, const string& _location, const string& _log);
 	~Event();
 	const string& GetType() const;
 	const string& GetData() const;
 	const string& GetLocation() const;
+	const string& GetLog() const;
 
 private:
 	time_t m_timestamp;
 	string m_type;
 	string m_data;
 	string m_location;
+	string m_log;
 };
