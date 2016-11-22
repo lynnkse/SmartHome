@@ -59,6 +59,15 @@ ElevatorAgentCreator.o : $(INC_PATH)/ElevatorAgentCreator.h $(SRC_PATH)/Elevator
 ElevatorAgent.so : ElevatorAgent.o ElevatorAgentCreator.o
 	$(CC) ElevatorAgent.o ElevatorAgentCreator.o -o ElevatorAgent.so -shared 
 
+SmokeDetector.o : $(SRC_PATH)/SmokeDetector.cpp $(INC_PATH)/SmokeDetector.h 
+	$(CC) $(CFLAGS) $(SRC_PATH)/SmokeDetector.cpp -pthread -std=gnu++11 
+
+SmokeDetectorCreator.o : $(INC_PATH)/SmokeDetectorCreator.h $(SRC_PATH)/SmokeDetectorCreator.cpp
+	$(CC) $(CFLAGS) $(SRC_PATH)/SmokeDetectorCreator.cpp
+
+SmokeDetector.so : SmokeDetector.o SmokeDetectorCreator.o
+	$(CC) SmokeDetector.o SmokeDetectorCreator.o -o SmokeDetector.so -shared 
+
 clean :
 	rm -f *.o
 	rm -f *.o
@@ -69,7 +78,7 @@ clean_so :
 
 rebuild : clean app
 
-rebuild_so : clean_so LiveLog.so ElevatorAgent.so
+rebuild_so : clean_so LiveLog.so ElevatorAgent.so SmokeDetector.so
 
  
 

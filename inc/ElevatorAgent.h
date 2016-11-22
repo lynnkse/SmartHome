@@ -5,19 +5,15 @@
 
 class PubSubHub;
 class Config;
-class Deque;
-class Config;
-class Event;
-//template <class Event*>
-//class SafeDeque;
-
+//class Deque;
+//class Event;
 
 class ElevatorAgent : public Agent
 {
 public:
 	ElevatorAgent(const Config& _config, const PubSubHub* _hub);
 	~ElevatorAgent();
-	virtual void Run();
+	//virtual void Run();
 	
 protected:
 	virtual string GetLocation() const;
@@ -30,10 +26,8 @@ private:
 	//virtual void Send(const Event& _event);
 	int m_currFloor;
 
-	thread m_recievingThread;
-	thread m_sendingThread;
-	//pthread_t m_recievingThread;
-	//pthread_t m_sendingThread;
+	//thread m_recievingThread;
+	//thread m_sendingThread;
 };
 
 #endif

@@ -5,6 +5,7 @@
 #include "../inc/AgentLifecycleManager.h"
 #include "../inc/PubSubHub.h"
 #include "../inc/ElevatorAgentCreator.h"
+#include "../inc/SmokeDetectorCreator.h"
 #include "../inc/LiveLogCreator.h"
 #include <unistd.h>
 #include <dlfcn.h>
@@ -35,6 +36,13 @@ void LoadAndAddCreator(const Config& _config, AgentFactory& _factory)
 		F func = (F) dlsym(handle, "GetLiveLogCreator");
 		AgentCreator* creator = (AgentCreator*) func(); 
 		_factory.AddCreator("LiveLog", creator);
+	}
+	else if(s == "SmokeDetector")
+	{	
+		void* handle = dlopen("./SmokeDetector.so", RTLD_LAZY);
+		F func = (F) dlsym(handle, "GetSmokeDetectorCreator");
+		AgentCreator* creator = (AgentCreator*) func(); 
+		_factory.AddCreator("SmokeDetector", creator);
 	}
 }
 

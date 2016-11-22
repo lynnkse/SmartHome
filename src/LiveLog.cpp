@@ -9,20 +9,21 @@
 
 using namespace std;
 
-LiveLog::LiveLog(const Config& _config, const PubSubHub* _hub, const LogConfig& _logConfig) : Agent(_config, _hub)
+LiveLog::LiveLog(const Config& _config, const PubSubHub* _hub, const LogConfig& _logConfig) : Agent(_config, _hub, true)
 {
 	//TODO set server here
 	//cout << "LiveLog: LiveLog Created" << endl;
+	AddAction("sendtoserver");
 }
 
 LiveLog::~LiveLog() {}
 
-void LiveLog::Run()
+/*void LiveLog::Run()
 {
 	SubscribeToHub();	
 	m_recievingThread = thread([this] { ProcessEvents(); } );
 	m_sendingThread = thread([this] { GenerateEvent(); } );	
-}	
+}*/
 
 void LiveLog::ProcessEvents()
 {
@@ -31,7 +32,10 @@ void LiveLog::ProcessEvents()
 	{	
 		Event* e = (Event*) GetEvent();
 	
-		cout << "========>LiveLog msg:" <<e->GetData() << endl;
+		if(GetAction(e->GetType()) == "sendtoserver")
+		{
+			cout << "========>LiveLog msg:" <<e->GetData()  << "Type: " << e->GetType() << endl;
+		}
 
 		delete e;
 	}

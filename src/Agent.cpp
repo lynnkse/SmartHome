@@ -9,7 +9,7 @@
 
 using namespace std;
 
-Agent::Agent(const Config& _config, const PubSubHub* _hub) : m_config(_config.GetConfig())
+Agent::Agent(const Config& _config, const PubSubHub* _hub, bool _isController) : m_config(_config.GetConfig()), m_isController(_isController)
 {
 	if(!_hub) 
 		{
@@ -18,6 +18,8 @@ Agent::Agent(const Config& _config, const PubSubHub* _hub) : m_config(_config.Ge
 		}	
 	else
 		m_hub = (PubSubHub*) _hub;
+	
+	m_itSet = false;
 
 	Tokenizer_t t;
 
@@ -92,10 +94,10 @@ void Agent::SubscribeToHub()
 
 const string& Agent::GetData(const string& _key) const
 {
-	map<string, string>::const_iterator it = m_config.find(_key);
-	if(it != m_config.end())
+	map<string, string>::const_iterator dit = m_config.find(_key);
+	if(dit != m_config.end())
 	{	
-		return (*it).second;
+		return (*dit).second;
 	}
 	else
 	{		
@@ -109,11 +111,16 @@ void Agent::AddAction(const string& _action)
 	//m_actions.insert(_action);
 	
 	vector<string>::iterator it = find(m_configTokens.begin(), m_configTokens.end(), _action);
+	
+	if(it == m_configTokens.end())
+		return;
+
+	++it;
 	do
 	{
 		m_triggersAndActions[*it] = _action;
 		++it;
-	} while(*it++ == "|");
+	} while(it != m_configTokens.end() && *it++ == "|");
 }
 
 void Agent::SetConfig(const string& _key, const string& _val)
@@ -126,14 +133,18 @@ const string& Agent::GetLocationOfInterest() const
 	return GetData("From");
 }
 
-string Agent::GetNextTriggerIvent() const
+string Agent::GetNextTriggerIvent() 
 {
-	static map<string, string>::const_iterator it = m_triggersAndActions.begin();
-	
-	if(it != m_triggersAndActions.end())
+	if(!m_itSet) 
 	{
-		string s = it->first;
-		++it;
+		m_it = m_triggersAndActions.begin();
+		m_itSet = true;
+	}
+
+	if(m_it != m_triggersAndActions.end())
+	{
+		string s = (m_it)->first;
+		++(m_it);
 		return s;
 	}
 	else
@@ -142,9 +153,29 @@ string Agent::GetNextTriggerIvent() const
 	}
 }
 
+string Agent::GetAction(const string& _event) const 
+{
+	map<string, string>::const_iterator it = m_triggersAndActions.find(_event);	
+	if(it != m_triggersAndActions.end())
+	{
+		return it->second;
+	}
+	else if((it = m_triggersAndActions.find("All")) != m_triggersAndActions.end())
+	{
+		return it->second;
+	}
+	
+	return "noaction";
+}
 
-
-
+void Agent::Run()
+{
+	if(m_isController)		
+		SubscribeToHub();
+	
+	m_recievingThread = thread([this] { ProcessEvents(); } );
+	m_sendingThread = thread([this] { GenerateEvent(); } );	
+}
 
 
 

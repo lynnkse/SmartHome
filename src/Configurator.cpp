@@ -79,9 +79,10 @@ vector<Config> Configurator::GetAgentsConfigs() const
 	Config conf1;
 	conf1.SetData("type", "LiveLog");
 	conf1.SetData("id", "live-log");
-	conf1.SetData("OutEvent", "All");
-	conf1.SetData("InEvent", "All");
+	//conf1.SetData("OutEvent", "All");
+	//conf1.SetData("InEvent", "All");
 	conf1.SetData("From", "All");
+	conf1.SetData("config", "sendtoserver:All");
 	vec.push_back(conf1);
 	//conf1.SetData("log", "live_log");
 	//conf1.SetData("event", "eloor");

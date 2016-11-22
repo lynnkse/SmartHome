@@ -21,7 +21,7 @@ public:
 	LiveLog(const Config& _config, const PubSubHub* _hub, const LogConfig& _logConfig);
 	~LiveLog();		
 	void AddConnection(const string& _userName, const string& _level);
-	virtual void Run();
+	//virtual void Run();
 
 protected:
 	virtual void ProcessEvents();
@@ -35,10 +35,8 @@ private:
 	Server* m_server;
 	//SafeDeque* m_eventsQueue;
 	//SafeDeque<>* m_newConnections;
-	pthread_t m_eventsThread;
-	pthread_t m_connectionsThread;
-	thread m_recievingThread;
-	thread m_sendingThread;
+	//thread m_recievingThread;
+	//thread m_sendingThread;
 };
 
 #endif

@@ -12,20 +12,20 @@ using namespace std;
 
 const int INIT_FLOOR = 5;
 
-ElevatorAgent::ElevatorAgent(const Config& _config, const PubSubHub* _hub) : Agent(_config, _hub), m_currFloor(INIT_FLOOR) 
+ElevatorAgent::ElevatorAgent(const Config& _config, const PubSubHub* _hub) : Agent(_config, _hub, true), m_currFloor(INIT_FLOOR) 
 {
 	AddAction("Go_Down");
 }
 
 ElevatorAgent::~ElevatorAgent() {}
 
-void ElevatorAgent::Run()
+/*void ElevatorAgent::Run()
 {
 	SubscribeToHub();	
 	m_recievingThread = thread([this] { ProcessEvents(); } );
 	m_sendingThread = thread([this] { GenerateEvent(); } );	
 	//cout << "Elevator run" << endl;
-}
+}*/
 
 void ElevatorAgent::ProcessEvents() 
 {
