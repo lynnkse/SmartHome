@@ -25,6 +25,7 @@ public:
 	virtual ~Agent();
 	void SubscribeToHub();
 	virtual void Run();
+	void JoinThreads();
 	
 protected:
 	const Event* GetEvent();

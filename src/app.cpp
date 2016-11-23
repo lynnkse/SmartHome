@@ -69,7 +69,10 @@ int main()
 
 	lifecycleManager.CreateAgents(configs);
 
-	sleep(999999);
+	lifecycleManager.DestroyAgents();
+	hub.JoinThreads();
+
+	//sleep(999999);
 
 	return 0;
 }

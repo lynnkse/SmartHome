@@ -198,7 +198,10 @@ const vector<Agent*>& PubSubHub::Subscribers::GetRelevantAgents(const Event* _ev
 	return GetIntersection(sets);
 } 
 
-
+void PubSubHub::JoinThreads() 
+{
+	m_thread.join();
+}
 
 
 

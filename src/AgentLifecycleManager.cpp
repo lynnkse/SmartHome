@@ -28,8 +28,9 @@ void AgentLifecycleManager::CreateAgents(const vector<Config>& _configs)
 
 void AgentLifecycleManager::DestroyAgents()
 {
-	for(vector<Agent*>::const_iterator it = m_agents.begin(); it != m_agents.end(); ++it)
+	for(vector<Agent*>::iterator it = m_agents.begin(); it != m_agents.end(); ++it)
 	{
+		(*it)->JoinThreads();		
 		delete *it;
 	}
 }

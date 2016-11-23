@@ -19,6 +19,7 @@ private:
 		void InsertAgent(Agent* _agent);
 		const vector<Agent*>& GetRelevantAgents(const Event* _event);
 		const vector<Agent*>& GetIntersection(vector<vector<Agent*> > &sets);
+		void JoinThreads() const;
 	private:
 		//vector<Agent*> m_agents;
 		map<string, vector<Agent*> > m_byEvent;
@@ -34,6 +35,7 @@ public:
 	void Recieve(const Event* _event);
 	void Run();
 	void ProcessEvents();
+	void JoinThreads(); 
 
 private:
 	const PubSubHub& operator=(const PubSubHub& _hub);

@@ -184,11 +184,11 @@ const string& Agent::GetLog()
 	return m_config["log"];
 }
 
-/*const string& Agent::GetEventType()
+void Agent::JoinThreads()
 {
-	return m_config["Event"];
-}*/
-
+	m_recievingThread.join();
+	m_sendingThread.join();
+}
 
 
 
