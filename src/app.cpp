@@ -69,7 +69,7 @@ int main()
 
 	lifecycleManager.CreateAgents(configs);
 
-	sleep(5);
+	sleep(999999);
 
 	return 0;
 }

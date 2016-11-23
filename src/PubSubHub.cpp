@@ -28,7 +28,7 @@ void PubSubHub::Publish(const Event* _event)
 {
 	const vector<Agent*>& relevantSubscribers = m_subs.GetRelevantAgents(_event);
 	
-	cout << "Event of type " << _event->GetType() << ", Log: " << _event->GetLog() << " is being sent to " << relevantSubscribers.size() << endl;
+	//cout << "Event of type " << _event->GetType() << ", Log: " << _event->GetLog() << " is being sent to " << relevantSubscribers.size() << endl;
 
 	for(vector<Agent*>::const_iterator it = relevantSubscribers.begin(); it != relevantSubscribers.end(); ++it)
 	{
@@ -86,6 +86,9 @@ const vector<Agent*>& PubSubHub::Subscribers::GetIntersection(vector<vector<Agen
                 m_relevantAgents.push_back(elem);
         }
     }
+
+	cout << "Num. of relevant agents: " << m_relevantAgents.size() << endl;	
+
     return m_relevantAgents;
 }
 
@@ -137,29 +140,61 @@ void PubSubHub::Subscribers::InsertAgent(Agent* _agent)
 
 const vector<Agent*>& PubSubHub::Subscribers::GetRelevantAgents(const Event* _event) 
 { 
+	vector<vector<Agent*> > sets;
+	vector<Agent*> byLoc;	
+	vector<Agent*> byEve;
+	bool added = false;
+	
 	m_relevantAgents.clear();	
 
 	string s = _event->GetType();
 
 	map<string, vector<Agent*> >::const_iterator it_loc = m_byLocation.find(_event->GetLocation());
-	if(it_loc == m_byLocation.end())
+	if(it_loc != m_byLocation.end())
 	{
-		it_loc = m_byLocation.find("All");
+		byLoc.insert(byLoc.end(), it_loc->second.begin(), it_loc->second.end());	
+		//sets.push_back(it_loc->second);	
+		added = true;
 	}
-	if(it_loc == m_byLocation.end())
-		return m_relevantAgents;	
 	
-	map<string, vector<Agent*> >::const_iterator it_event = m_byEvent.find(_event->GetType());
-	if(it_event == m_byEvent.end())
+	it_loc = m_byLocation.find("All");
+	if(it_loc != m_byLocation.end())
 	{
-		it_event = m_byEvent.find("All");
+		byLoc.insert(byLoc.end(), it_loc->second.begin(), it_loc->second.end());
+		//sets.push_back(it_loc->second);		
+		added = true;
 	}
-	if(it_event == m_byEvent.end())
+	if(!added)
 		return m_relevantAgents;
 
-	vector<vector<Agent*> > sets;
-	sets.push_back(it_loc->second);
-	sets.push_back(it_event->second);
+	added = false;	
+	
+	map<string, vector<Agent*> >::const_iterator it_event = m_byEvent.find(_event->GetType());
+	if(it_event != m_byEvent.end())
+	{
+		byEve.insert(byEve.end(), it_event->second.begin(), it_event->second.end());
+		//sets.push_back(it_event->second);			
+		added = true;
+	}
+
+	it_event = m_byEvent.find("All");
+	if(it_event != m_byEvent.end())
+	{
+		byEve.insert(byEve.end(), it_event->second.begin(), it_event->second.end());	
+		//sets.push_back(it_event->second);
+		added = true;
+		//cout << "Here i am " << it_event->second.size() << endl;
+	}
+	if(!added)
+		return m_relevantAgents;
+	
+	sets.push_back(byEve);
+	sets.push_back(byLoc);
+
+	//cout << byEve.size() << byLoc.size() << endl;
+
+	//cout << "Event log: " << _event->GetType() << endl;
+
 	return GetIntersection(sets);
 } 
 

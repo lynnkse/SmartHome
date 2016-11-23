@@ -22,7 +22,7 @@ void LiveLog::ProcessEvents()
 	{	
 		Event* e = (Event*) GetEvent();
 	
-		cout << "Livelog received event. Log: " << e->GetLog() << endl;
+		//cout << "Livelog received event. Log: " << e->GetLog() << endl;
 	
 		if(GetAction(e->GetType()) == "sendtoserver" && (GetLog() == e->GetLog() || GetLog() == "All"))
 		{
