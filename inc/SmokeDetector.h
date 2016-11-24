@@ -12,6 +12,8 @@ public:
 	SmokeDetector(const Config& _config, const PubSubHub* _hub);
 	~SmokeDetector();
 
+	//static void CreateFireEvent();//to handle event
+
 protected:
 	virtual void ProcessEvents();
 	virtual void GenerateEvent();
@@ -19,6 +21,8 @@ protected:
 private:
 	void operator=(const Agent& _agnt);
 	SmokeDetector(const Agent& _agnt);
+	
+	//static SmokeDetector* m_detector;
 };
 
 #endif

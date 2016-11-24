@@ -12,7 +12,7 @@ Agent* SmokeDetectorCreator::Create(const Config& _conf, const PubSubHub* _hub) 
 }
 
 extern "C"
-void* GetSmokeDetectorCreator()
+void* GetAgentCreator()
 {
 	return new SmokeDetectorCreator();
 }

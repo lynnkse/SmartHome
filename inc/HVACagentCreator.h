@@ -1,3 +1,6 @@
+#ifndef __HVACAGENTCREATOR_H__
+#define __HVACAGENTCREATOR_H__
+
 class AgentCreator;
 class HVACcontrollerAgent;
 
@@ -12,3 +15,8 @@ private:
 	void operator=(const HVACagentCreator& _crtr);
 	HVACagentCreator(const HVACagentCreator& _crtr);
 };
+
+extern "C"
+void* GetAgentCreator();
+
+#endif

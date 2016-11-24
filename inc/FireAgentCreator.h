@@ -1,3 +1,6 @@
+#ifndef __FIREAGENTCREATOR_H__
+#define __FIREAGENTCREATOR_H__
+
 class AgentCreator;
 class FireSensorAgent;
 
@@ -12,3 +15,8 @@ private:
 	void operator=(const FireAgentCreator& _crtr);
 	FireAgentCreator(const FireAgentCreator& _crtr);
 };
+
+extern "C"
+void* GetAgentCreator();
+
+#endif

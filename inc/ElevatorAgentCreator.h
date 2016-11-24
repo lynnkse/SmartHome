@@ -21,6 +21,6 @@ private:
 };
 
 extern "C"
-void* GetElevatorAgentCreator();
+void* GetAgentCreator();
 
 #endif

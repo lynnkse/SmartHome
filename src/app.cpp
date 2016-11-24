@@ -4,11 +4,12 @@
 #include "../inc/AgentFactory.h"
 #include "../inc/AgentLifecycleManager.h"
 #include "../inc/PubSubHub.h"
-#include "../inc/ElevatorAgentCreator.h"
-#include "../inc/SmokeDetectorCreator.h"
-#include "../inc/LiveLogCreator.h"
+//#include "../inc/ElevatorAgentCreator.h"
+//#include "../inc/SmokeDetectorCreator.h"
+//#include "../inc/LiveLogCreator.h"
 #include <unistd.h>
 #include <dlfcn.h>
+#include <set>
 
 using namespace std;
 
@@ -16,34 +17,46 @@ typedef void* (*F)();
 
 void LoadAndAddCreator(const Config& _config, AgentFactory& _factory)
 {
-	/*string s = _"../";
-	s += config.GetData("type");
+	static set<string> loadedCreators;
+
+	string s = "./";
+	s += _config.GetData("type");
 	s += ".so";
-	dlopen(s, RTLD_NOW); TODO make sure it isn't open twice*/
 
-	string s = _config.GetData("type");
+	if(loadedCreators.find(s) == loadedCreators.end())
+	{
+		void* handle = dlopen(s.c_str(), RTLD_LAZY); 
+		F func = (F) dlsym(handle, "GetAgentCreator");
+		AgentCreator* creator = (AgentCreator*) func();
+		_factory.AddCreator(_config.GetData("type"), creator);
+		loadedCreators.insert(s);
+	}
 
-	if(s == "ElevatorAgent") 
+	//dlopen(s, RTLD_NOW); TODO make sure it isn't open twice
+
+	//string s = _config.GetData("type");
+
+	/*if(s == "ElevatorAgent") 
 	{	
-		void* handle = dlopen("./ElevatorAgent.so", RTLD_LAZY); //TODO make sure it isn't open twice
-		F func = (F) dlsym(handle, "GetElevatorAgentCreator");
+		void* handle = dlopen("./ElevatorAgent.so", RTLD_LAZY); 
+		F func = (F) dlsym(handle, "GetAgentCreator");
 		AgentCreator* creator = (AgentCreator*) func();
 		_factory.AddCreator("ElevatorAgent", creator);
 	}	
 	else if(s == "LiveLog")
 	{	
 		void* handle = dlopen("./LiveLog.so", RTLD_LAZY);
-		F func = (F) dlsym(handle, "GetLiveLogCreator");
+		F func = (F) dlsym(handle, "GetAgentCreator");
 		AgentCreator* creator = (AgentCreator*) func(); 
 		_factory.AddCreator("LiveLog", creator);
 	}
 	else if(s == "SmokeDetector")
 	{	
 		void* handle = dlopen("./SmokeDetector.so", RTLD_LAZY);
-		F func = (F) dlsym(handle, "GetSmokeDetectorCreator");
+		F func = (F) dlsym(handle, "GetAgentCreator");
 		AgentCreator* creator = (AgentCreator*) func(); 
 		_factory.AddCreator("SmokeDetector", creator);
-	}
+	}*/
 }
 
 int main()

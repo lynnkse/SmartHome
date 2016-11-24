@@ -21,6 +21,6 @@ private:
 };
 
 extern "C"
-void* GetSmokeDetectorCreator();
+void* GetAgentCreator();
 
 #endif
