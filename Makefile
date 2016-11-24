@@ -5,7 +5,7 @@ CFLAGS = -g -c -std=gnu++11  -fPIC
 INC_PATH = ./inc
 SRC_PATH = ./src
 
-OBJC = Agent.o Event.o PubSubHub.o AgentFactory.o app.o AgentLifecycleManager.o Config.o Configurator.o LogConfig.o 
+OBJC = Agent.o Event.o PubSubHub.o AgentFactory.o app.o AgentLifecycleManager.o Config.o Configurator.o LogConfig.o TCPServer.o
 
 .PHONY : clean rebuild clean_so rebuild_so
 
@@ -35,6 +35,9 @@ LogConfig.o : $(SRC_PATH)/LogConfig.cpp $(INC_PATH)/LogConfig.h
 
 Configurator.o : $(SRC_PATH)/Configurator.cpp $(INC_PATH)/Configurator.h $(SRC_PATH)/Parser_t.cpp $(INC_PATH)/Parser_t.h $(SRC_PATH)/Tokenizer_t.cpp $(INC_PATH)/Tokenizer_t.h 
 	$(CC) $(CFLAGS) $(SRC_PATH)/Configurator.cpp 
+
+TCPServer.o : $(SRC_PATH)/TCPServer.cpp $(INC_PATH)/TCPServer.h
+	$(CC) $(CFLAGS) $(SRC_PATH)/TCPServer.cpp 
 
 app.o : $(SRC_PATH)/app.cpp $(INC_PATH)/Configurator.h $(INC_PATH)/Config.h
 	$(CC) $(CFLAGS) $(SRC_PATH)/app.cpp 
