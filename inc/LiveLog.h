@@ -4,6 +4,7 @@
 #include <map>
 #include <map>
 #include "../inc/Agent.h"
+#include "../inc/TCPServer.h"
 #include <vector>
 #include <thread>
 
