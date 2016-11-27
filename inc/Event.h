@@ -1,5 +1,6 @@
 #include <ctime>
 #include <string>
+#include <ctime>
 
 using namespace std;
 
@@ -12,6 +13,7 @@ public:
 	const string& GetData() const;
 	const string& GetLocation() const;
 	const string& GetLog() const;
+	const string GetTime() { return ctime(&m_timestamp); };
 
 private:
 	time_t m_timestamp;

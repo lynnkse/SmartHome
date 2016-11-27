@@ -9,6 +9,8 @@
 
 using namespace std;
 
+bool Agent::m_isAlive = true;
+
 Agent::Agent(const Config& _config, const PubSubHub* _hub, bool _isController) : m_config(_config.GetConfig()), m_isController(_isController)
 {
 	if(!_hub) 

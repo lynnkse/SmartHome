@@ -5,6 +5,8 @@
 #include "../inc/Config.h"
 #include <vector>
 #include <iostream>//for test
+#include <csignal>
+
 using namespace std;
 
 AgentLifecycleManager::AgentLifecycleManager(AgentFactory* _factory, PubSubHub* _hub) : m_factory(_factory), m_hub(_hub) 
@@ -30,7 +32,10 @@ void AgentLifecycleManager::DestroyAgents()
 {
 	for(vector<Agent*>::iterator it = m_agents.begin(); it != m_agents.end(); ++it)
 	{
+		//cout << "Before join" << endl;		
+		//raise(SIGINT);
 		(*it)->JoinThreads();		
+		//cout << "After join" << endl;
 		delete *it;
 	}
 }

@@ -22,7 +22,7 @@ public:
 	LiveLog(const Config& _config, const PubSubHub* _hub, const LogConfig& _logConfig);
 	~LiveLog();		
 	void AddConnection(const string& _userName, const string& _level);
-	//virtual void Run();
+	void SendEventToServer(Event* _event);
 
 protected:
 	virtual void ProcessEvents();

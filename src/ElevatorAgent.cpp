@@ -29,7 +29,7 @@ ElevatorAgent::~ElevatorAgent() {}
 
 void ElevatorAgent::ProcessEvents() 
 {
-	while(1) //TODO fix this, it should die
+	while(IsAlive()) //TODO fix this, it should die
 	{	
 		//cout << "Elevator ProcessEvents" << endl;	
 	
@@ -46,11 +46,12 @@ void ElevatorAgent::ProcessEvents()
 		
 		delete e;
 	}
+	//cout << "End of ElevatorAgent::ProcessEvents()" << endl;
 }
 
 void ElevatorAgent::GenerateEvent() 
 {
-	while(1)
+	while(IsAlive())
 	{
 		//cout << "Elevator GenerateEvent" << endl;			
 		sleep(1);
@@ -62,6 +63,7 @@ void ElevatorAgent::GenerateEvent()
 		Event* elevatorCurrFloorChange = new Event(timer, GetData("Event"), buffer.str(), GetLocation(), GetLog());
 		SendEventToHub(elevatorCurrFloorChange);
 	}
+	//cout << "End of ElevatorAgent::GenerateEvent()" << endl;
 }
 
 string ElevatorAgent::GetLocation() const

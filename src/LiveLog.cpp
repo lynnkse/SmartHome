@@ -27,7 +27,7 @@ LiveLog::~LiveLog()
 
 void LiveLog::ProcessEvents()
 {
-	while(1) //TODO fix this, it should die
+	while(IsAlive()) //TODO fix this, it should die
 	{	
 		Event* e = (Event*) GetEvent();
 	
@@ -35,17 +35,31 @@ void LiveLog::ProcessEvents()
 	
 		if(GetAction(e->GetType()) == "sendtoserver" && (GetLog() == e->GetLog() || GetLog() == "All"))
 		{
-			//cout << "========>LiveLog msg:" <<e->GetData()  << "Log: " << e->GetLog() << endl;
-			m_server->SendMessage(e->GetData());
+			SendEventToServer(e);
 		}
 
 		delete e;
 	}
+	//cout << "End of LiveLog::ProcessEvents()" << endl;
 }
 
 void LiveLog::GenerateEvent(){}
 	
 void LiveLog::AddConnection(const string& _userName, const string& _level){}
+
+void LiveLog::SendEventToServer(Event* _event)
+{
+			string s = "Event: ";
+			s += _event->GetData();
+			m_server->SendMessage(s);
+			s = "Location: ";
+			s += _event->GetLocation();
+			m_server->SendMessage(s);
+			s = "Time: ";
+			s += _event->GetTime();
+			m_server->SendMessage(s);
+			m_server->SendMessage("\n");
+}
 
 
 

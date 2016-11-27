@@ -36,6 +36,8 @@ public:
 	void Run();
 	void ProcessEvents();
 	void JoinThreads(); 
+	static bool IsAlive() { return m_isAlive; };
+	static void Stop() { m_isAlive = false; }; 
 
 private:
 	const PubSubHub& operator=(const PubSubHub& _hub);
@@ -45,6 +47,7 @@ private:
 	SafeDeque<Event*>* m_events;
 	Subscribers m_subs;
 	thread m_thread;
+	static bool m_isAlive;
 };
 
 

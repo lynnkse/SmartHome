@@ -26,6 +26,7 @@ public:
 	void SubscribeToHub();
 	virtual void Run();
 	void JoinThreads();
+	static void Stop() { m_isAlive = false; }; 
 	
 protected:
 	const Event* GetEvent();
@@ -40,6 +41,8 @@ protected:
 	const string& GetLocationOfInterest() const;
 	string GetNextTriggerIvent();
 	const string& GetLog();
+	static bool IsAlive() { return m_isAlive; };
+	
 	//const string& GetEventType();
 
 private:
@@ -59,6 +62,7 @@ private:
 	bool m_itSet;
 	thread m_recievingThread;
 	thread m_sendingThread;
+	static bool m_isAlive;
 };
 
 #endif

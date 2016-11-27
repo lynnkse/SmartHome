@@ -6,11 +6,14 @@
 #include <algorithm>
 #include <map>
 #include <set>
+#include <csignal>
 
 #include <iostream>//for test
 using namespace std;
 
-PubSubHub::PubSubHub()
+bool PubSubHub::m_isAlive = true;
+
+PubSubHub::PubSubHub() 
 {
 	m_events = new SafeDeque<Event*>();
 }
@@ -22,6 +25,13 @@ PubSubHub::~PubSubHub()
 		delete m_events;
 		m_events = 0;
 	}
+}
+
+void killHandler(int signum) 
+{	
+	Agent::Stop();
+	PubSubHub::Stop(); 
+	//cout << "Dest" << endl;
 }
 
 void PubSubHub::Publish(const Event* _event) 
@@ -46,11 +56,13 @@ void PubSubHub::Subscribe(Agent* _agent)
 
 void PubSubHub::Recieve(const Event* _event)
 {
-	m_events->Push((Event*)_event); //TODO this const??
+	m_events->Push((Event*)_event); 
 }
 
 void PubSubHub::Run()
 {
+	signal(SIGINT, killHandler);
+	
 	m_thread = thread([this] { ProcessEvents(); } );
 	
 	//cout << "Hub run" << endl;
@@ -58,11 +70,12 @@ void PubSubHub::Run()
 
 void PubSubHub::ProcessEvents()
 {
-	while(1) //FIXME this shoul die
+	while(IsAlive()) 
 	{	
 		Event* event = m_events->Pop();
 		Publish(event);
 	}
+	//cout << "End of PubSubHub::ProcessEvents()" << endl;
 }
 
 const vector<Agent*>& PubSubHub::Subscribers::GetIntersection(vector<vector<Agent*> > &sets)
@@ -87,7 +100,7 @@ const vector<Agent*>& PubSubHub::Subscribers::GetIntersection(vector<vector<Agen
         }
     }
 
-	cout << "Num. of relevant agents: " << m_relevantAgents.size() << endl;	
+	//cout << "Num. of relevant agents: " << m_relevantAgents.size() << endl;	
 
     return m_relevantAgents;
 }
@@ -202,10 +215,6 @@ void PubSubHub::JoinThreads()
 {
 	m_thread.join();
 }
-
-
-
-
 
 
 
