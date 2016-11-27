@@ -7,6 +7,8 @@
 #include <unistd.h>
 #include <dlfcn.h>
 #include <set>
+#include "../inc/logmngr.h"
+#include <iostream>
 
 using namespace std;
 
@@ -23,6 +25,8 @@ void LoadAndAddCreator(const Config& _config, AgentFactory& _factory)
 	if(loadedCreators.find(s) == loadedCreators.end())
 	{
 		void* handle = dlopen(s.c_str(), RTLD_LAZY); 
+		//int r = dlerror() ? atoi(dlerror()) : 0; 		
+		//cout << r << endl;
 		F func = (F) dlsym(handle, "GetAgentCreator");
 		AgentCreator* creator = (AgentCreator*) func();
 		_factory.AddCreator(_config.GetData("type"), creator);
@@ -32,6 +36,9 @@ void LoadAndAddCreator(const Config& _config, AgentFactory& _factory)
 
 int main()
 {
+	ZlogInit("log.config");
+	Zlog* z = ZlogGet("mod1");
+
 	Configurator configurator("agents.config");
 	vector<Config> configs = configurator.GetAgentsConfigs();
 
@@ -40,6 +47,7 @@ int main()
 	for(vector<Config>::const_iterator it = configs.begin(); it != configs.end(); ++it)
 	{
 		LoadAndAddCreator(*it, agentFactory);
+		ZLOG_SEND(z, LOG_TRACE, "agent creator added to factory ",1);
 	}
 
 	PubSubHub hub;
@@ -51,6 +59,8 @@ int main()
 
 	lifecycleManager.DestroyAgents();
 	hub.JoinThreads();
+	
+	LogManagerDestroy();
 
 	return 0;
 }

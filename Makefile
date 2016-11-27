@@ -10,7 +10,7 @@ OBJC = Agent.o Event.o PubSubHub.o AgentFactory.o app.o AgentLifecycleManager.o 
 .PHONY : clean rebuild clean_so rebuild_so
 
 app : $(OBJC) 
-	$(CC) $(OBJC) $(SRC_PATH)/Parser_t.cpp $(SRC_PATH)/Tokenizer_t.cpp -o app  -ldl -rdynamic 
+	$(CC) $(OBJC) $(SRC_PATH)/Parser_t.cpp $(SRC_PATH)/Tokenizer_t.cpp -o app  -ldl -rdynamic -L./lib -llogger -lds
 
 Agent.o : $(SRC_PATH)/Agent.cpp $(INC_PATH)/Agent.h $(INC_PATH)/SafeDeque.h $(INC_PATH)/Event.h
 	$(CC) $(CFLAGS) $(SRC_PATH)/Agent.cpp  -pthread 
@@ -71,6 +71,33 @@ SmokeDetectorCreator.o : $(INC_PATH)/SmokeDetectorCreator.h $(SRC_PATH)/SmokeDet
 SmokeDetector.so : SmokeDetector.o SmokeDetectorCreator.o
 	$(CC) SmokeDetector.o SmokeDetectorCreator.o -o SmokeDetector.so -shared 
 
+TempSensorAgent.o : $(SRC_PATH)/TempSensorAgent.cpp $(INC_PATH)/TempSensorAgent.h 
+	$(CC) $(CFLAGS) $(SRC_PATH)/TempSensorAgent.cpp -pthread -std=gnu++11 
+
+TempSensorAgentCreator.o : $(INC_PATH)/TempSensorAgentCreator.h $(SRC_PATH)/TempSensorAgentCreator.cpp
+	$(CC) $(CFLAGS) $(SRC_PATH)/TempSensorAgentCreator.cpp
+
+TempSensor.so : TempSensorAgent.o TempSensorAgentCreator.o
+	$(CC) TempSensorAgent.o TempSensorAgentCreator.o -o TempSensor.so -shared 
+
+HVACcontrollerAgent.o : $(SRC_PATH)/HVACcontrollerAgent.cpp $(INC_PATH)/HVACcontrollerAgent.h 
+	$(CC) $(CFLAGS) $(SRC_PATH)/HVACcontrollerAgent.cpp -pthread -std=gnu++11 
+
+HVACagentCreator.o : $(INC_PATH)/HVACagentCreator.h $(SRC_PATH)/HVACagentCreator.cpp
+	$(CC) $(CFLAGS) $(SRC_PATH)/HVACagentCreator.cpp
+
+HVACcontrollerAgent.so : HVACcontrollerAgent.o HVACagentCreator.o
+	$(CC) HVACcontrollerAgent.o HVACagentCreator.o -o HVACcontrollerAgent.so -shared 
+
+SprinklerControllerAgent.o : $(SRC_PATH)/SprinklerControllerAgent.cpp $(INC_PATH)/SprinklerControllerAgent.h 
+	$(CC) $(CFLAGS) $(SRC_PATH)/SprinklerControllerAgent.cpp -pthread -std=gnu++11 
+
+SprinklerAgentCreator.o : $(INC_PATH)/SprinklerAgentCreator.h $(SRC_PATH)/SprinklerAgentCreator.cpp
+	$(CC) $(CFLAGS) $(SRC_PATH)/SprinklerAgentCreator.cpp
+
+SprinklerControllerAgent.so : SprinklerControllerAgent.o SprinklerAgentCreator.o
+	$(CC) SprinklerControllerAgent.o SprinklerAgentCreator.o -o SprinklerControllerAgent.so -shared 
+
 clean :
 	rm -f *.o
 	rm -f *.o
@@ -81,7 +108,7 @@ clean_so :
 
 rebuild : clean app
 
-rebuild_so : clean_so LiveLog.so ElevatorAgent.so SmokeDetector.so
+rebuild_so : clean_so LiveLog.so ElevatorAgent.so SmokeDetector.so TempSensor.so HVACcontrollerAgent.so
 
  
 

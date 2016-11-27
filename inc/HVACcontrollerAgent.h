@@ -1,28 +1,26 @@
 #ifndef __HVACCONTROLLERAGENT_H__
 #define __HVACCONTROLLERAGENT_H__
 
-class Agent;
 class PubSubHub;
 class Config;
-class Deque;
-class SafeDeque;
 class Config;
 class Event;
 
-class HVACcontrollerAgent : Agent
+#include "../inc/Agent.h"
+
+class HVACcontrollerAgent : public Agent
 {
 public:
-	HVACcontrollerAgent(const Config& _config, const PubSubHub& _hub);
+	HVACcontrollerAgent(const Config& _config, const PubSubHub* _hub);
 	~HVACcontrollerAgent();
-	virtual void Recieve(const Event& _event);
+	void ProcessEvents();
+	void GenerateEvent();
 	
 protected:
 
 private:
 	void operator=(const Agent& _agnt);
-	void HVACcontrollerAgent(const Agent& _agnt);
-	virtual void Send(const Event& _event);
-	virtual Run();
+	HVACcontrollerAgent(const Agent& _agnt);
 };
 
 #endif

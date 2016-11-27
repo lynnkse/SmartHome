@@ -6,6 +6,7 @@
 #include <iostream>
 #include <algorithm>
 #include "../inc/Tokenizer_t.h"
+#include "../inc/logmngr.h"
 
 using namespace std;
 
@@ -13,8 +14,10 @@ bool Agent::m_isAlive = true;
 
 Agent::Agent(const Config& _config, const PubSubHub* _hub, bool _isController) : m_config(_config.GetConfig()), m_isController(_isController)
 {
+	Zlog* z = ZlogGet("mod1");
 	if(!_hub) 
 		{	
+			ZLOG_SEND(z, LOG_TRACE, "Hub is NULL pointer ",1);			
 			throw("nullptr exception");	
 		}	
 	else
@@ -46,6 +49,7 @@ Agent::Agent(const Config& _config, const PubSubHub* _hub, bool _isController) :
 
 
 	m_deque = new SafeDeque<Event*>();
+	ZLOG_SEND(z, LOG_TRACE, "Agent created ",1);
 }
 
 Agent::~Agent()
@@ -106,6 +110,8 @@ const string& Agent::GetData(const string& _key) const
 
 void Agent::AddAction(const string& _action) 
 { 
+	Zlog* z = ZlogGet("mod1");	
+
 	vector<string>::iterator it = find(m_configTokens.begin(), m_configTokens.end(), _action);
 	
 	if(it == m_configTokens.end())
@@ -117,6 +123,7 @@ void Agent::AddAction(const string& _action)
 		m_triggersAndActions[*it] = _action;
 		++it;
 	} while(it != m_configTokens.end() && *it++ == "|");
+	ZLOG_SEND(z, LOG_TRACE, "Action added to agent ",1);
 }
 
 void Agent::SetConfig(const string& _key, const string& _val)
@@ -151,6 +158,7 @@ string Agent::GetNextTriggerIvent()
 
 string Agent::GetAction(const string& _event) const 
 {
+	Zlog* z = ZlogGet("mod1");		
 	map<string, string>::const_iterator it = m_triggersAndActions.find(_event);	
 	if(it != m_triggersAndActions.end())
 	{
@@ -160,8 +168,11 @@ string Agent::GetAction(const string& _event) const
 	{
 		return it->second;
 	}
-	
-	return "noaction";
+	else
+	{
+		ZLOG_SEND(z, LOG_TRACE, "No action found ",1);
+		return "noaction";
+	}
 }
 
 void Agent::Run()

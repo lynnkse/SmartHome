@@ -1,23 +1,26 @@
-class Agent;
+#ifndef __SPRINKLERCONTROLLERAGENT_H__
+#define __SPRINKLERCONTROLLERAGENT_H__
+
 class PubSubHub;
 class Config;
-class Deque;
-class SafeDeque;
 class Config;
 class Event;
 
-class SprinklerControllerAgent : Agent
+#include "../inc/Agent.h"
+
+class SprinklerControllerAgent : public Agent
 {
 public:
-	SprinklerControllerAgent(const Config& _config, const PubSubHub& _hub);
+	SprinklerControllerAgent(const Config& _config, const PubSubHub* _hub);
 	~SprinklerControllerAgent();
-	virtual void Recieve(const Event& _event);
+	void ProcessEvents();
+	void GenerateEvent();
 	
 protected:
 
 private:
 	void operator=(const Agent& _agnt);
-	void SprinklerControllerAgent(const Agent& _agnt);
-	virtual void Send(const Event& _event);
-	virtual Run();
+	SprinklerControllerAgent(const Agent& _agnt);
 };
+
+#endif

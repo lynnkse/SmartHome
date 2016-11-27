@@ -31,7 +31,7 @@ void LiveLog::ProcessEvents()
 	{	
 		Event* e = (Event*) GetEvent();
 	
-		if(GetAction(e->GetType()) == "sendtoserver" && (GetLog() == e->GetLog() || GetLog() == "All"))
+		if(GetAction(e->GetType()) == "sendtoserver" && (GetLog().find_first_of(e->GetLog()) != string::npos || GetLog() == "All"))
 		{
 			SendEventToServer(e);
 		}
