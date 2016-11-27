@@ -1,7 +1,5 @@
 #include <string>
 #include "../inc/Event.h"
-//#include <iostream>//for test
-//using namespace std;
 
 Event::Event(const time_t& _timestamp, const string& _type, const string& _data, const string& _location, const string& _log) : m_timestamp(_timestamp), m_type(_type), m_data(_data), m_location(_location), m_log(_log) {}
 Event::~Event(){};

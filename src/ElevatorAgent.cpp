@@ -19,41 +19,28 @@ ElevatorAgent::ElevatorAgent(const Config& _config, const PubSubHub* _hub) : Age
 
 ElevatorAgent::~ElevatorAgent() {}
 
-/*void ElevatorAgent::Run()
-{
-	SubscribeToHub();	
-	m_recievingThread = thread([this] { ProcessEvents(); } );
-	m_sendingThread = thread([this] { GenerateEvent(); } );	
-	//cout << "Elevator run" << endl;
-}*/
-
 void ElevatorAgent::ProcessEvents() 
 {
-	while(IsAlive()) //TODO fix this, it should die
+	while(IsAlive()) 
 	{	
-		//cout << "Elevator ProcessEvents" << endl;	
-	
 		Event* e = (Event*) GetEvent();
 	
-		if(e->GetType() == "Fire_Detected")
+		if(GetAction(e->GetType()) == "Go_Down")  
 		{
 			time_t timer;
 			time(&timer);
-			//cout << "Evelator recived event. Log: " << e->GetLog() << endl;
-			Event* elevatorDownEvent = new Event(timer, GetData("Event"), "Elevator goes down on event of fire", GetLocation(), GetLog());
+			Event* elevatorDownEvent = new Event(timer, GetData("Event"), "Elevator goes down on event of fire\n", GetLocation(), GetLog());
 			SendEventToHub(elevatorDownEvent);
 		}
 		
 		delete e;
 	}
-	//cout << "End of ElevatorAgent::ProcessEvents()" << endl;
 }
 
 void ElevatorAgent::GenerateEvent() 
 {
 	while(IsAlive())
-	{
-		//cout << "Elevator GenerateEvent" << endl;			
+	{	
 		sleep(1);
 		m_currFloor = m_currFloor + (rand()%4 - 2);
 		time_t timer;
@@ -63,7 +50,6 @@ void ElevatorAgent::GenerateEvent()
 		Event* elevatorCurrFloorChange = new Event(timer, GetData("Event"), buffer.str(), GetLocation(), GetLog());
 		SendEventToHub(elevatorCurrFloorChange);
 	}
-	//cout << "End of ElevatorAgent::GenerateEvent()" << endl;
 }
 
 string ElevatorAgent::GetLocation() const

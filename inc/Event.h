@@ -1,3 +1,6 @@
+#ifndef __EVENT_H__
+#define __EVENT_H__
+
 #include <ctime>
 #include <string>
 #include <ctime>
@@ -22,3 +25,5 @@ private:
 	string m_location;
 	string m_log;
 };
+
+#endif

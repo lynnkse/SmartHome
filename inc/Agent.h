@@ -23,14 +23,13 @@ class Agent
 public:
 	Agent(const Config& _config, const PubSubHub* _hub, bool _isController);
 	virtual ~Agent();
-	void SubscribeToHub();
+	
 	virtual void Run();
 	void JoinThreads();
-	static void Stop() { m_isAlive = false; }; 
+	static void Stop(); 
 	
 protected:
-	const Event* GetEvent();
-	const PubSubHub* GetHub() const;
+	const Event* GetEvent() const;
 	virtual string GetLocation() const;
 	void SendEventToHub(const Event* _event);
 	const string& GetData(const string& _key) const;
@@ -41,11 +40,10 @@ protected:
 	const string& GetLocationOfInterest() const;
 	string GetNextTriggerIvent();
 	const string& GetLog();
-	static bool IsAlive() { return m_isAlive; };
-	
-	//const string& GetEventType();
+	static bool IsAlive();
 
 private:
+	void SubscribeToHub();
 	const Agent& operator=(const Agent& _agnt);
 	Agent(const Agent& _agnt);
 	void Send(const Event* _event) const;
@@ -59,7 +57,7 @@ private:
 	vector<string> m_configTokens;
 	PubSubHub* m_hub;
 	map<string, string>::iterator m_it;
-	bool m_itSet;
+	bool m_itSet; //true when m_it is set
 	thread m_recievingThread;
 	thread m_sendingThread;
 	static bool m_isAlive;

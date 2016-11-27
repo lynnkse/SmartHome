@@ -2,13 +2,13 @@
 #include "../inc/Event.h"
 #include "../inc/SafeDeque.h"
 #include "../inc/Agent.h"
+#include "../inc/SmokeDetector.h"
 #include <vector>
 #include <algorithm>
 #include <map>
 #include <set>
 #include <csignal>
 
-#include <iostream>//for test
 using namespace std;
 
 bool PubSubHub::m_isAlive = true;
@@ -31,14 +31,11 @@ void killHandler(int signum)
 {	
 	Agent::Stop();
 	PubSubHub::Stop(); 
-	//cout << "Dest" << endl;
 }
 
 void PubSubHub::Publish(const Event* _event) 
 {
 	const vector<Agent*>& relevantSubscribers = m_subs.GetRelevantAgents(_event);
-	
-	//cout << "Event of type " << _event->GetType() << ", Log: " << _event->GetLog() << " is being sent to " << relevantSubscribers.size() << endl;
 
 	for(vector<Agent*>::const_iterator it = relevantSubscribers.begin(); it != relevantSubscribers.end(); ++it)
 	{
@@ -51,7 +48,6 @@ void PubSubHub::Publish(const Event* _event)
 void PubSubHub::Subscribe(Agent* _agent)
 {
 	m_subs.InsertAgent(_agent);
-	//cout << "Agent inserted" << endl;
 }
 
 void PubSubHub::Recieve(const Event* _event)
@@ -64,8 +60,6 @@ void PubSubHub::Run()
 	signal(SIGINT, killHandler);
 	
 	m_thread = thread([this] { ProcessEvents(); } );
-	
-	//cout << "Hub run" << endl;
 }
 
 void PubSubHub::ProcessEvents()
@@ -75,7 +69,6 @@ void PubSubHub::ProcessEvents()
 		Event* event = m_events->Pop();
 		Publish(event);
 	}
-	//cout << "End of PubSubHub::ProcessEvents()" << endl;
 }
 
 const vector<Agent*>& PubSubHub::Subscribers::GetIntersection(vector<vector<Agent*> > &sets)
@@ -100,8 +93,6 @@ const vector<Agent*>& PubSubHub::Subscribers::GetIntersection(vector<vector<Agen
         }
     }
 
-	//cout << "Num. of relevant agents: " << m_relevantAgents.size() << endl;	
-
     return m_relevantAgents;
 }
 
@@ -113,11 +104,9 @@ void PubSubHub::Subscribers::InsertAgent(Agent* _agent)
 	try
 	{	
 		loc = _agent->GetLocationOfInterest();
-		//event = _agent->GetData("InEvent");	
 	}
 	catch(const char* _e)
 	{
-		cout << _e << endl;
 		return;
 	}
 	
@@ -166,15 +155,13 @@ const vector<Agent*>& PubSubHub::Subscribers::GetRelevantAgents(const Event* _ev
 	if(it_loc != m_byLocation.end())
 	{
 		byLoc.insert(byLoc.end(), it_loc->second.begin(), it_loc->second.end());	
-		//sets.push_back(it_loc->second);	
 		added = true;
 	}
 	
 	it_loc = m_byLocation.find("All");
 	if(it_loc != m_byLocation.end())
 	{
-		byLoc.insert(byLoc.end(), it_loc->second.begin(), it_loc->second.end());
-		//sets.push_back(it_loc->second);		
+		byLoc.insert(byLoc.end(), it_loc->second.begin(), it_loc->second.end());		
 		added = true;
 	}
 	if(!added)
@@ -185,8 +172,7 @@ const vector<Agent*>& PubSubHub::Subscribers::GetRelevantAgents(const Event* _ev
 	map<string, vector<Agent*> >::const_iterator it_event = m_byEvent.find(_event->GetType());
 	if(it_event != m_byEvent.end())
 	{
-		byEve.insert(byEve.end(), it_event->second.begin(), it_event->second.end());
-		//sets.push_back(it_event->second);			
+		byEve.insert(byEve.end(), it_event->second.begin(), it_event->second.end());		
 		added = true;
 	}
 
@@ -194,19 +180,13 @@ const vector<Agent*>& PubSubHub::Subscribers::GetRelevantAgents(const Event* _ev
 	if(it_event != m_byEvent.end())
 	{
 		byEve.insert(byEve.end(), it_event->second.begin(), it_event->second.end());	
-		//sets.push_back(it_event->second);
 		added = true;
-		//cout << "Here i am " << it_event->second.size() << endl;
 	}
 	if(!added)
 		return m_relevantAgents;
 	
 	sets.push_back(byEve);
 	sets.push_back(byLoc);
-
-	//cout << byEve.size() << byLoc.size() << endl;
-
-	//cout << "Event log: " << _event->GetType() << endl;
 
 	return GetIntersection(sets);
 } 

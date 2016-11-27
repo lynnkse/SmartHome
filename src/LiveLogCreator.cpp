@@ -1,7 +1,7 @@
 #include "../inc/LiveLogCreator.h"
 #include "../inc/LiveLog.h"
 #include "../inc/Config.h"
-#include "../inc/LogConfig.h"//for testing
+#include "../inc/LogConfig.h"
 
 LiveLogCreator::LiveLogCreator(){};
 

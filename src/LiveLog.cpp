@@ -27,11 +27,9 @@ LiveLog::~LiveLog()
 
 void LiveLog::ProcessEvents()
 {
-	while(IsAlive()) //TODO fix this, it should die
+	while(IsAlive()) 
 	{	
 		Event* e = (Event*) GetEvent();
-	
-		//cout << "Livelog received event. Log: " << e->GetLog() << endl;
 	
 		if(GetAction(e->GetType()) == "sendtoserver" && (GetLog() == e->GetLog() || GetLog() == "All"))
 		{
@@ -40,7 +38,6 @@ void LiveLog::ProcessEvents()
 
 		delete e;
 	}
-	//cout << "End of LiveLog::ProcessEvents()" << endl;
 }
 
 void LiveLog::GenerateEvent(){}

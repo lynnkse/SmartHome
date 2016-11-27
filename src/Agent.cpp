@@ -14,8 +14,7 @@ bool Agent::m_isAlive = true;
 Agent::Agent(const Config& _config, const PubSubHub* _hub, bool _isController) : m_config(_config.GetConfig()), m_isController(_isController)
 {
 	if(!_hub) 
-		{
-			cout << "Agent: Agent()" << endl;		
+		{	
 			throw("nullptr exception");	
 		}	
 	else
@@ -53,6 +52,7 @@ Agent::~Agent()
 {
 	if(m_deque) 
 		delete m_deque;
+
 	m_deque = 0;
 }
 
@@ -61,7 +61,7 @@ void Agent::Recieve(const Event* _event)
 	m_deque->Push((Event*) _event);
 }
 
-const Event* Agent::GetEvent()
+const Event* Agent::GetEvent() const
 {
 	return m_deque->Pop();
 }
@@ -69,11 +69,6 @@ const Event* Agent::GetEvent()
 void Agent::Send(const Event* _event) const
 {
 	m_hub->Recieve(_event);
-}
-
-const PubSubHub* Agent::GetHub() const
-{
-	return m_hub;
 }
 
 string Agent::GetLocation() const
@@ -104,16 +99,13 @@ const string& Agent::GetData(const string& _key) const
 		return (*dit).second;
 	}
 	else
-	{		
-		cout << "Agent::GetData(); " << _key << endl;		
+	{			
 		throw ("no such field");
 	}
 }
 
 void Agent::AddAction(const string& _action) 
 { 
-	//m_actions.insert(_action);
-	
 	vector<string>::iterator it = find(m_configTokens.begin(), m_configTokens.end(), _action);
 	
 	if(it == m_configTokens.end())
@@ -175,9 +167,11 @@ string Agent::GetAction(const string& _event) const
 void Agent::Run()
 {
 	if(m_isController)		
+	{
 		SubscribeToHub();
-	
-	m_recievingThread = thread([this] { ProcessEvents(); } );
+		m_recievingThread = thread([this] { ProcessEvents(); } );
+	}
+
 	m_sendingThread = thread([this] { GenerateEvent(); } );	
 }
 
@@ -192,9 +186,15 @@ void Agent::JoinThreads()
 	m_sendingThread.join();
 }
 
+bool Agent::IsAlive() 
+{ 
+	return m_isAlive; 
+};
 
-
-
+void Agent::Stop() 
+{ 
+	m_isAlive = false; 
+}; 
 
 
 

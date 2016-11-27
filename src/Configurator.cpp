@@ -9,7 +9,7 @@
 
 using namespace std;
 
-Configurator::Configurator(const string& _agentsConfFile, const string& _logConfFile) : m_agentsConfFile(_agentsConfFile), m_logConfFile(_logConfFile) {}
+Configurator::Configurator(const string& _agentsConfFile) : m_agentsConfFile(_agentsConfFile){}
 
 Configurator::~Configurator(){};
 
@@ -53,25 +53,7 @@ vector<Config> Configurator::GetAgentsConfigs() const
 		}	
 		vec.push_back(conf);
 	}
-/*
-	Config conf1;
-	conf1.SetData("type", "LiveLog");
-	conf1.SetData("id", "live-log");
-	conf1.SetData("From", "All");
-	conf1.SetData("config", "sendtoserver:All");
-	vec.push_back(conf1);
-*/
 	return vec;
-}
-
-LogConfig Configurator::GetLogConfig() const
-{
-	LogConfig conf;
-
-	conf.SetData("port", "8888");
-	conf.SetData("ip", "127.0.0.1");
-
-	return conf;
 }
 
 

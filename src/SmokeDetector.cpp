@@ -2,7 +2,6 @@
 #include "../inc/Event.h"
 #include <unistd.h>
 #include <csignal>
-#include <iostream>//for test
 
 using namespace std;
 
@@ -28,21 +27,10 @@ void SmokeDetector::GenerateEvent()
 		signal(SIGUSR2, signalHandler);
 		m_detector = this;
 	}
-	/*while(1)
-	{
-		sleep(2);
-		time_t timer;
-		time(&timer);
-		Event* event = new Event(timer, GetData("Event"), "Fire detected", GetLocation(), GetData("log"));
-
-		SendEventToHub(event);
-	}*/
 }
+
 
 void SmokeDetector::CreateFireEvent() 
 {
-	time_t timer;
-	time(&timer);
-	Event* event = new Event(timer, m_detector->GetData("Event"), "Fire detected", m_detector->GetLocation(), m_detector->GetData("log"));
-	m_detector->SendEventToHub(event);
+	m_detector->SendEventToHub(new Event(time(0), m_detector->GetData("Event"), "Fire_Detected", m_detector->GetLocation(), m_detector->GetData("log")));
 }

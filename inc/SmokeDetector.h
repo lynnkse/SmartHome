@@ -12,7 +12,7 @@ public:
 	SmokeDetector(const Config& _config, const PubSubHub* _hub);
 	~SmokeDetector();
 
-	static void CreateFireEvent();//to handle event
+	static void CreateFireEvent();
 
 protected:
 	virtual void ProcessEvents();

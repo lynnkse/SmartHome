@@ -1,3 +1,6 @@
+#ifndef __HVACCONTROLLERAGENT_H__
+#define __HVACCONTROLLERAGENT_H__
+
 class Agent;
 class PubSubHub;
 class Config;
@@ -21,3 +24,5 @@ private:
 	virtual void Send(const Event& _event);
 	virtual Run();
 };
+
+#endif

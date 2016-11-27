@@ -9,7 +9,7 @@ Parser_t::Parser_t():m_currLineNum(0), m_fs(0){}
 
 Parser_t::~Parser_t()
 {
-	if(m_fs) delete m_fs; //because last m_fs is not deleted in ProcessFile()
+	if(m_fs) delete m_fs; 
 }
 
 string Parser_t::GetNextLine() 

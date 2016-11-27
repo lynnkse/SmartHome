@@ -34,10 +34,6 @@ private:
 		
 	map<string, vector<string> > m_connections;
 	Server* m_server;
-	//SafeDeque* m_eventsQueue;
-	//SafeDeque<>* m_newConnections;
-	//thread m_recievingThread;
-	//thread m_sendingThread;
 };
 
 #endif

@@ -21,8 +21,7 @@ const string& LogConfig::GetData(const string& _key)
 		return (*it).second;
 	}
 	else
-	{
-		cout << "LogConfig::GetData()" << endl;		
+	{	
 		throw ("no such field");
 	}
 }

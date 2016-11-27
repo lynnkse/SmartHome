@@ -1,3 +1,6 @@
+#ifndef __SAFEDEQUE_H__
+#define __SAFEDEQUE_H__
+
 #pragma once
 
 #include <mutex>
@@ -21,7 +24,7 @@ public:
 
     T Pop() 
 	{
-        unique_lock<std::mutex> lock(this->d_mutex);
+        unique_lock<mutex> lock(this->d_mutex);
         this->d_condition.wait(lock, [=]{ return !this->d_queue.empty(); });
         T rc(move(this->d_queue.back()));
         this->d_queue.pop_back();
@@ -35,3 +38,5 @@ private:
     condition_variable d_condition;
     deque<T> d_queue;
 };
+
+#endif

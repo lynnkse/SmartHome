@@ -1,3 +1,6 @@
+#ifndef __CONFIGURATOR_H__
+#define __CONFIGURATOR_H__
+
 #include <vector>
 #include <string>
 
@@ -10,7 +13,7 @@ class Configurator
 {
 public:
 	~Configurator();
-	Configurator(const string& _agentsConfFile, const string& _logConfFile);
+	Configurator(const string& _agentsConfFile);
 	vector<Config> GetAgentsConfigs() const;
 	LogConfig GetLogConfig() const;
 
@@ -18,3 +21,5 @@ private:
 	const string m_agentsConfFile;
 	const string m_logConfFile;
 };
+
+#endif

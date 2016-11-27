@@ -1,3 +1,6 @@
+#ifndef __PUBSUBHUB_H__
+#define __PUBSUBHUB_H__
+
 #include <vector>
 #include <thread>
 #include <vector>
@@ -21,10 +24,8 @@ private:
 		const vector<Agent*>& GetIntersection(vector<vector<Agent*> > &sets);
 		void JoinThreads() const;
 	private:
-		//vector<Agent*> m_agents;
 		map<string, vector<Agent*> > m_byEvent;
 		map<string, vector<Agent*> > m_byLocation;
-		//map<string, vector<Agent*> > m_byEvent;
 		vector<Agent*> m_relevantAgents;
 	};
 
@@ -50,7 +51,7 @@ private:
 	static bool m_isAlive;
 };
 
-
+#endif
 
 
 
