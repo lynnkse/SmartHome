@@ -208,6 +208,10 @@ void Agent::Stop()
 }; 
 
 
+const vector<string>& Agent::GetConfig() const
+{
+	return m_configTokens;
+}
 
 
 

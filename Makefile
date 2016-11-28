@@ -95,8 +95,9 @@ SprinklerControllerAgent.o : $(SRC_PATH)/SprinklerControllerAgent.cpp $(INC_PATH
 SprinklerAgentCreator.o : $(INC_PATH)/SprinklerAgentCreator.h $(SRC_PATH)/SprinklerAgentCreator.cpp
 	$(CC) $(CFLAGS) $(SRC_PATH)/SprinklerAgentCreator.cpp
 
-SprinklerControllerAgent.so : SprinklerControllerAgent.o SprinklerAgentCreator.o
-	$(CC) SprinklerControllerAgent.o SprinklerAgentCreator.o -o SprinklerControllerAgent.so -shared 
+Sprinkler.so : SprinklerControllerAgent.o SprinklerAgentCreator.o
+	$(CC) SprinklerControllerAgent.o SprinklerAgentCreator.o -o Sprinkler.so -shared 
+
 
 clean :
 	rm -f *.o
@@ -108,7 +109,7 @@ clean_so :
 
 rebuild : clean app
 
-rebuild_so : clean_so LiveLog.so ElevatorAgent.so SmokeDetector.so TempSensor.so HVACcontrollerAgent.so
+rebuild_so : clean_so LiveLog.so ElevatorAgent.so SmokeDetector.so TempSensor.so HVACcontrollerAgent.so Sprinkler.so
 
  
 

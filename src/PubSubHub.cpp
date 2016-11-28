@@ -57,7 +57,7 @@ void PubSubHub::Recieve(const Event* _event)
 
 void PubSubHub::Run()
 {
-	signal(SIGINT, killHandler);
+	//signal(SIGINT, killHandler);
 	
 	m_thread = thread([this] { ProcessEvents(); } );
 }

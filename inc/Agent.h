@@ -41,6 +41,8 @@ protected:
 	string GetNextTriggerIvent();
 	const string& GetLog();
 	static bool IsAlive();
+	void SetConfig(const string& _key, const string& _val);
+	const vector<string>& GetConfig() const;
 
 private:
 	void SubscribeToHub();
@@ -48,7 +50,6 @@ private:
 	Agent(const Agent& _agnt);
 	void Send(const Event* _event) const;
 	void Recieve(const Event* _event);
-	void SetConfig(const string& _key, const string& _val);
 	
 	SafeDeque<Event*>* m_deque;
 	bool m_isController;

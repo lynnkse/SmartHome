@@ -35,4 +35,4 @@ void SprinklerControllerAgent::ProcessEvents()
 	}
 }
 
-
+void SprinklerControllerAgent::GenerateEvent(){}

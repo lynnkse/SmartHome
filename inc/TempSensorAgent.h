@@ -18,5 +18,8 @@ protected:
 private:
 	void operator=(const Agent& _agnt);
 	TempSensorAgent(const Agent& _agnt);
-	virtual void Send(const Event& _event);
+
+	int upper;
+	int lower;
+	int period;
 };

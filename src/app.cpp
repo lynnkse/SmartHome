@@ -25,8 +25,11 @@ void LoadAndAddCreator(const Config& _config, AgentFactory& _factory)
 	if(loadedCreators.find(s) == loadedCreators.end())
 	{
 		void* handle = dlopen(s.c_str(), RTLD_LAZY); 
-		//int r = dlerror() ? atoi(dlerror()) : 0; 		
-		//cout << r << endl;
+		if (!handle) 
+    	{ 
+			fprintf(stderr, "dlopen failed: %s\n", dlerror()); 
+      		exit(EXIT_FAILURE); 
+		};
 		F func = (F) dlsym(handle, "GetAgentCreator");
 		AgentCreator* creator = (AgentCreator*) func();
 		_factory.AddCreator(_config.GetData("type"), creator);
